@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Tic-Tac-Toe 1p - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Tic-Tac-Toe for 1 Player</h1>
+
+<h2>Instruction</h2>
+
+<h3>How can we teach the computer to play Tic-Tac-Toe?</h3>
+
+<p>We now want to get the computer to make moves in place of the second player, but before that we need to think about how we go about playing Tic-Tac-Toe?</p>
+
+<p>Well, something like:</p>
+
+<ol>
+ <li><b><u>Look for</u> cells are still free</b></li>
+ <li><b>Pick one of them</b></li>
+</ol>
+
+<p>But how can computers do "<u>Look for ...</u>"? Computers can't <em>see</em> the way you do... <br/>
+... but computers are very good in keeping track of stuff!</p>
+
+<p>So what do we know?</p>
+
+<ol type="a">
+ <li>At the beginning of the game all cells are empty.</li>
+ <li>When you click a cell, the <em>computer</em> puts an "X", in the cell, so the computer can just t<u>ake note of</u> which cell it was...</li>
+ <li>Once the computer picked a cell in which it wants to put the "O" in, it can again take note of it in the same way.</li>
+</ol>
+
+<p>OK, how do we do <u>take note of</u>?</p>
+
+<p>We create a <em>representation</em> of Tic-Tac-Toe game board, that is simple for the computer to work with. Computers are ready good with lists (or <b>arrays</b>, as list are called in JS). We call the array <code>Cells</code> and it's just a list of all the cell ids that are still empty.</p>
+
+<pre>var Cells = ['a','b','c','d','e','f','g','h','i']</pre>
+
+<p>An array is defined in the same way as a regular variable, but instead of a single value we give a list of values, separated by a comma "<code>,</code>" and enclosed by square brackets "<code>[]</code>".</p>
+
+<p>To learn more about arrays, check out: <a href= "https://www.w3schools.com/js/js_arrays.asp">W3School: JS Arrays</a></p>
+
+<h3>MarkCell(cx)</h3>
+<p>Let's now step through the command of the <code>MarkCell</code> function:</p>
+
+<p>The first line is the same as before, the computer marks the cell you clicked:</p>
+
+<pre>document.getElementById(cx).innerHTML = "X";</pre>
+
+<h3>Game Over</h3>
+<p>The next few lines check if you just clicked the very last cell, i.e., if the number of cells (=length of the array) that are still available is 1 ... (<b>Why not 0?</b> We have not yet updated the <em>representation</em> that the computer works with - that comes next...)</p>
+
+<p>... and if so stop the game, by alerting the player by showing a message window showing "Game Over" and stop the function from doing anything else: </p>
+<pre>
+ if ( Cells.length == 1 ) {
+  alert("Game Over");
+  return;
+ }
+</pre>
+
+<h3>Track Open Cells</h3>
+<p>How to we mark off a cell that is no longer available in the <code>Cells</code> array, so that the computer knows about it?</p>
+
+<p>We remove the cell id that is no longer available from the array. We can do that with the <code>splice</code> method. "Splice" means you cut the array at the given location, remove a given number of array elements, and put the array together again:</p>
+
+<pre>
+  Cells.splice(Cells.indexOf(cx),1);
+</pre>
+
+<p>The <code>.indexOf</code> method lets us know at which position in the array the cell id that is stored in the variable <code>cx</code> in located.</p>
+<p>To learn more about <code>.indexOf</code>, check out: <a href= "https://www.w3schools.com/jsref/jsref_indexof_array.asp">W3School: JS Array -  indexOf()</a></p>
+
+<p>We then use the <code>.splice</code> method to take out that cell id.</p>
+<p>To learn more about <code>.splice</code>, check out: <a href= "https://www.w3schools.com/js/js_array_methods.asp">W3School: JS Array Methods</a>, then scroll down on the page until you find the headings <b>Splicing an Array</b> and <b>Using splice() to Remove Elements</b></p>
+
+<h3>Pick a cell, any cell...</h3>
+
+<p>From the remaining open cells, we then - randomly - pick one.</p>
+
+<p>The command <code>Math.random()</code> gives us a random number between 0 and 1 (but less than 1). Check out: <a href= "https://www.w3schools.com/js/js_random.asp">W3School: JS Random</a>.</p>
+
+<p>... but for an array index we need a whole number (also called <em>integer</em>) between 0 and one less of the length of the array.</p>
+
+<p>To get that we first multiply our random number with the number of open cells in the array, that is <code>Cells.length</code>... but that is not an integer!
+
+<p>... so we just clip off everything after the decimal point with <code>Math.floor</code>. For example, 3.1415 would become 3.</p>
+<p>Check out: <a href= "https://www.w3schools.com/js/js_math.asp">W3School: JS Math</a>, then scroll down on the page until you find the headings <b>Math.floor()</b>.</p>
+
+<h3>Putting it all together</h3>
+<ul>
+ <li>The cell index we picked is stored in the variable <code>io</code>:<br/>
+ <code>var io = Math.floor(Cells.length*Math.random());</code></li>
+ <li>... and the id of that cell we can get by looking at the <i>io</i><sup>th</sup> element of the array. Remember the variable <code>io</code> contains some integer - say 3 - so we can get the third element of the array with <code>Cells[3]</code>, or using the variable instead:<br/>
+ <code>var co = Cells[io];</code></li>
+ <li>Now we put an "O" in that cell:<br/>
+ <code>document.getElementById(co).innerHTML = "O";</code></li>
+ <li>... and remove it from the list of open cells:<br/>
+ <code>Cells.splice(Cells.indexOf(co),1);</code></li>
+</ul>
+
+<h3>Challenge</h3>
+
+<p>The computer can now play Tic-Tac-Toe ... but it plays very lousily!</p>
+
+<p>At some point you'll to have to teach him to play better &mdash; but that's for later...</p>
+
+</body></html>

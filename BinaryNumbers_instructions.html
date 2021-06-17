@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>8bit - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Binary Numbers</h1>
+<h2>Instructions</h2>
+
+<h3>How does a computer count?</h3>
+
+<p>Computers count in a weird way. To count from 0 to 10 they go:</p>
+<pre>
+   0 1 10 11 100 101 110 111 1000 1001 1010 
+</pre>
+
+<p>Instead of having ten symbols for counting, as we humans have (<code>0,1,2,3,4,5,6,7,8,9</code>), computers only have 2 (<code>0,1</code>).</p>
+
+<p>For example, in human counting 101 is:</p>
+<pre> 101 = 1*(10*10) + 0*10 + 1*1,</pre>
+<p>but in computer counting it is:</p>
+<pre> 101 = 1*(2*2) + 0*2 + 1*1</pre>
+<p>... which is 5 in human counting. The human way of counting is called the <b>decimal</b> numbers, and the computer way of counting is called the <b>binary</b> numbers. For <em>decimal</em> numbers we call a single symbol a <b>digit</b>. (For example, 101 is a three-digit number.) In <em>binary</em> that is called a <b>bit</b>.</p>
+<p>Because humans tend to get dizzy when looking of large binary numbers for too long, we sometimes group 8 bits together and call it a <b>byte</b>.</p>
+<p>When you form numbers from <em>bytes</em> that is called <b>hexadecimal</b>, or <b>hex</b> for short.</p>
+<p>Hex numbers use 16 symbols: (<code>0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F</code>). As a hex number 101 would be:</p>
+<pre> 101 = 1*(16*16) + 0*16 + 1*1,</pre>
+<p>... which is 257 in decimal counting.</p>
+
+<h3>What do I care?</h3>
+<p>Pretty confusing stuff, right? ... but why should you care?</p>
+
+<p>When you work with computers you will sooner or later come across binary and hex numbers. For example, when you work with colors &mdash; we'll talk about that in the next game/app.</p>
+
+<h3>Resources</h3>
+
+<p>To learn more about how to define colors with CSS, check out <a href= "https://www.w3schools.com/css/css_colors.asp">W3School: CSS Colors</a></p>
+
+<p><em>But now let's take a look how the 3 different apps are created:</em></p>
+
+<hr><!-- _______________________________________________________________ -->
+<h3>8 bit Binary Numbers</h3>
+<p>We first define a table with two rows and nine columns, similar to what we did it in the Tic-Tac-Toe game. This time we used the <code>&lt;th&gt;</code> tag in the first row and the <code>&lt;td&gt;</code> in the second row. The first one stands for <em>table header</em> and uses a bold fond.</p>
+
+<p>In the cells of the table we put, for example,</p>
+<pre>
+&lt;td&gt;&lt;select id='7bit' onchange='UpdateBin()'&gt;
+	&lt;option value='0'&gt;0&lt;/option&gt;
+	&lt;option value='1'&gt;1&lt;/option&gt;
+&lt;/select&gt;&lt;/td&gt;
+</pre>
+<p>The <code>&lt;select&gt;</code> creates the <em>drop-down list</em>.<br/>
+Check out: <a href= "https://www.w3schools.com/html/html_form_elements.asp" target="_blank">W3School: HTML Form Elements</a> to learn about how they work.</p>
+
+<p>We also added to the <code>&lt;select&gt;</code> tag an <code>id</code> and an <code>onchange</code> event. The <code>onclick</code> event we used so far requires you to click the element, but for the  <code>onchange</code> event,  you just need to change something, and it will call the specified function, here <code>UpdateBin()</code></p>
+
+<h3><code>UpdateBin()</code></h3>
+<p>This function just reads all the eight different cells in our table, with, for example:</p>
+<pre>p7 = document.getElementById("7bit").value</pre>
+<p>Then it computes from all the bits the coresponding decimal number with:</p>
+<pre>d = 128*p7 + 64*p6 + 32*p5 + 16*p4 + 8*p3 + 4*p2 + 2*p1 + 1*p0</pre>
+<p>... and writes the result in the table cell with the <code>id="Dbin"</code></p>
+
+<hr><!-- _______________________________________________________________ -->
+<h3>2 byte Hex Numbers</h3>
+<p>This app works almost the same as the previous one, we just have 16 instead of 2 values in the drop-down list, and 3 instead of 8 cells in the table.</p>
+
+<hr><!-- _______________________________________________________________ -->
+<h3>Decimal to Hex</h3>
+
+<p>The <code>&lt;body&gt;</code> html parts of this app uses the same simple set-up as we saw in the <b>Hello YOU</b> game.</p>
+
+<h3>UpdateDec()</h3>
+<p>In this function we do something that in any good program should be done:<br/>
+Make sure that what you type in is actually what the computer expects. Here, the computer expects an integer between 0 and 255, so we check if that is the case with:</p>
+<pre>if ( Dec > -1 &amp;&amp; Dec < 256 ) { ... }</pre>
+<p>What is "<code>&amp;&amp;</code>"? That means that both conditions have to be true.<br/>
+Check out: <a href= "https://www.w3schools.com/js/js_comparisons.asp">W3School: JS Comparisons</a> and scroll down to <b>Logical Operators</b>.</p>
+
+<p>To get the first hex digit from the decimal number we have to divide the decimal number by 16 and then take in integer part of it:</p>
+<pre>HEX1 = Math.floor(Dec/16)</pre>
+<p>... but what might the percent sign do?</p>
+<pre>HEX2 = Dec%16;</pre>
+<p>It gives the remainder of the division. That would be our second hex digit, but not quite, because our hex digit may come out as "11", but we need it to be "B". How can we do that?</p>
+
+<p>Let's use a little trick: We create an array which contains all the right hex digits:</p>
+<pre>var HEX = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]</pre>
+<p>... and use the values we computed as the <em>index</em> for that array. When we write:</p>
+<pre>document.getElementById('Hex').innerHTML = "HEX: " + HEX[HEX1] + HEX[HEX2];</pre>
+
+<p>the number in the variable <code>HEX1</code> (say it is <code>14</code>) then becomes <code>HEX[14]</code> is <code>E</code>.</p>
+
+</body>
+</html>

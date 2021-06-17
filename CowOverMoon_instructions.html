@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Cow Over Moon - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>The Cow Flies Over The Moon</h1>
+
+<h2>Instruction</h2>
+
+<p>We focused a lot on JavaScript, and used only basic CSS, like setting font sizes and colors.</p>
+
+<p>But here just a quick example of some of the cool things you can do with CSS: You can move things around! Here we move one picture with respect to another. We downloaded from the web a picture of a landscape with a full moon, and one of a cow. The cow picture came on a "transparent" background, that comes in handy when we overlay the pictures.</p>
+
+<h3><code>&lt;body&gt;</code> and <code>&lt;h1&gt;</code></h3>
+<p>We set the background color to navy blue and the color in which the heading is written to white:</p>
+<pre>
+&lt;style&gt;
+ body { background-color: navy; }
+ h1   {  color:          white; }
+&lt;/style&gt;
+</pre>
+
+<h3><code>&lt;div&gt;</code> and <code>&lt;img&gt;</code></h3>
+<p>We load two images with the <code>&lt;img&gt;</code> tag. To learn what the different attributes mean, check out:
+<a href= "https://www.w3schools.com/html/html_images.asp">W3School: HTML Images</a></p>
+<p>We place the images into a <code>&lt;div&gt;</code> tag, which is just a generic tag, so that we can do something with it. We give the identifiers <code>"moon"</code> and <code>"cow"</code>.</p>
+
+<h3><code>&lt;style&gt;</code></h3>
+<p>In the CSS style section, we refer to these identifiers with <code>#</code>.
+(See <a href= "https://www.w3schools.com/css/css_syntax.asp">W3School: CSS Syntax and Selectors</a>).</p>
+
+<p>To be able to move the <code>#cow</code> with respect to the <code>#moon</code>, we have to define one with <code>position: relative;</code> and the other one with <code>position: absolute;</code>.<br/>
+To learn more about that, check out:
+<a href= "https://www.w3schools.com/css/css_positioning.asp">W3School: CSS Layout - The position Property</a>.</p>
+
+<p>In the <code>#cow</code> section we add an animation that we call <code>mymove</code>. We state that it should last for 5 seconds and repeat forever (<code>infinite</code>).<br/>
+See <a href= "https://www.w3schools.com/css/css3_animations.asp">W3School:  CSS Animations</a>.</p>
+
+<p>The <code>mymove</code> animation is defined in the <code>@keyframes</code> section, where we specify the position of the cow during the animation.<br/>
+
+Check out: <a href= "https://www.w3schools.com/cssref/css3_pr_animation-keyframes.asp">W3School: CSS @keyframes Rule</a>.</p>
+
+<h3>Sharing</h3>
+<p>The two images are in different files, so if you want to send this to a friend you need to send the images as well. Also, your friend will have to save the HTML file and the images first in the same directory, and then load the HTML file into the browser. Starting it from the email attachment will not load the images...</p>
+</html>

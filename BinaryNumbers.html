@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>8bit</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+.box {
+ height:50px;
+ width: 100px;
+}
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>8 bit Binary Numbers</h1>
+
+<script>
+function UpdateBin() {
+ p7 = document.getElementById("7bit").value
+ p6 = document.getElementById("6bit").value
+ p5 = document.getElementById("5bit").value
+ p4 = document.getElementById("4bit").value
+ p3 = document.getElementById("3bit").value
+ p2 = document.getElementById("2bit").value
+ p1 = document.getElementById("1bit").value
+ p0 = document.getElementById("0bit").value
+ d = 128*p7 + 64*p6 + 32*p5 + 16*p4 + 8*p3 + 4*p2 + 2*p1 + 1*p0
+ document.getElementById('Dbin').innerHTML = d
+}
+</script>
+
+<table border='1'>
+<tr>
+<th>2<sup>7</sup>=128</th><th>2<sup>6</sup>=64</th><th>2<sup>5</sup>=32</th>
+<th>2<sup>4</sup>= 16</th><th>2<sup>3</sup>= 8</th><th>2<sup>2</sup>= 4</th>
+<th>2<sup>1</sup>=  2</th><th>2<sup>0</sup>= 1</th><th>Decimal Number</th>
+</tr>
+<tr>
+<td><select id='7bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='6bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='5bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='4bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='3bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='2bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='1bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td><select id='0bit' onchange='UpdateBin()'>
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+</select></td>
+<td id="Dbin">0</td>
+</tr></table>
+
+<hr>
+<!-- _______________________________________________________________ -->
+<h1>2 byte Hex Numbers</h1>
+
+<script>
+function UpdateHex() {
+ p1 = document.getElementById("1hex").value
+ p0 = document.getElementById("0hex").value
+ d = 16*p1 + 1*p0
+ document.getElementById('Dhex').innerHTML = d
+}
+</script>
+
+<table border='1'>
+<tr>
+<th>16</th><th>1</th><th>Decimal Number</th>
+</tr>
+<tr>
+<td><select id='1hex' onchange='UpdateHex()'>
+	<option value= '0'>0</option>
+	<option value= '1'>1</option>
+	<option value= '2'>2</option>
+	<option value= '3'>3</option>
+	<option value= '4'>4</option>
+	<option value= '5'>5</option>
+	<option value= '6'>6</option>
+	<option value= '7'>7</option>
+	<option value= '8'>8</option>
+	<option value= '9'>9</option>
+	<option value='10'>A</option>
+	<option value='11'>B</option>
+	<option value='12'>C</option>
+	<option value='13'>D</option>
+	<option value='14'>E</option>
+	<option value='15'>F</option>
+</select></td>
+<td><select id='0hex' onchange='UpdateHex()'>
+	<option value= '0'>0</option>
+	<option value= '1'>1</option>
+	<option value= '2'>2</option>
+	<option value= '3'>3</option>
+	<option value= '4'>4</option>
+	<option value= '5'>5</option>
+	<option value= '6'>6</option>
+	<option value= '7'>7</option>
+	<option value= '8'>8</option>
+	<option value= '9'>9</option>
+	<option value='10'>A</option>
+	<option value='11'>B</option>
+	<option value='12'>C</option>
+	<option value='13'>D</option>
+	<option value='14'>E</option>
+	<option value='15'>F</option>
+</select></td>
+<td id="Dhex">0</td>
+</tr></table>
+
+<hr>
+<!-- _______________________________________________________________ -->
+<h1>Decimal to Hex</h1>
+
+<script>
+function UpdateDec() {
+ var Dec = document.getElementById("Dec").value;
+ if ( Dec > -1 && Dec < 256 ) {
+  HEX1 = Math.floor(Dec/16);
+  HEX2 = Dec%16;
+  var HEX = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+  document.getElementById('Hex').innerHTML = "HEX: " + HEX[HEX1] + HEX[HEX2];
+ } else {
+  document.getElementById('Hex').innerHTML = "Enter an integer between 0 and 255...";
+ }
+}
+</script>
+
+<textarea id="Dec" rows="1" cols="5">255</textarea>
+<button type='button' onclick='UpdateDec()'>Submit</button> <br/>
+<span id='Hex'>Hex: FF</span>
+</body>
+</html>

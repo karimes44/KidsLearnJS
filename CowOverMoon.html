@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Cow Flies Over The Moon</title>
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; 
+ background-color: navy;}
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        white; }
+ 
+#moon {
+ position: relative;
+ width:    800px; }
+ 
+#cow {
+ position: absolute;
+ width: 200px;
+ top:   20px;
+ right: 0px; 
+ animation: mymove 5s infinite;
+}
+ 
+@keyframes mymove {
+ 0% {
+  left: 600px;
+  top:  300px; }
+ 25% {
+  left: 400px;
+  top:    0px; }
+ 50% {
+  left: 200px;
+  top:    0px; }
+ 75% {
+  left:   0px;
+  top:   300px; }
+ 100% {
+  left: 600px;
+  top:  300px; }
+}
+
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>The Cow Flies Over The Moon</h1>
+
+
+<div id="moon">
+ <img alt="Moon" src="img/Moon.jpg" width="800px">
+ <div id="cow">
+  <img alt="Cow" src="img/Cow.png" width="200px" >
+ </div>
+</div>
+</body>
+
+</html>

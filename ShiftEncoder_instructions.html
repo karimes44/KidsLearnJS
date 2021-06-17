@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Shift Encoder - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Shift Encoder</h1>
+<h2>Instructions</h2>
+
+<ol>
+ <li>Type the text you want to encode in the <i>Encode</i> window, and click <b>Encode</b>, for example:<br/>
+  <code>Can you read this secret message?</code></li>
+ <li>The encoded text will show up in the <i>Decode</i> window: <br/>
+  <code>Hfs%~tz%wjfi%ymnx%xjhwjy%rjxxfljD</code></li>
+ <li>You can share the app with a friend and then, say, email your friend the encoded message. For example, you can cut-and-paste the code into the email.</li>
+ <li>Your friend can then cut-and-paste the code from the email into the <i>Decode</i> window and click <b>Decode</b>.</li>
+ <li>The readable message will show up below the <i>Decode</i> window.</li>
+ <li>Your friend can then send you a different secret message back.</li>
+</ol>
+
+<h3>How does that work?</h3>
+<p>Computer use numbers of length 2 bytes (or sometimes 4bytes) to represent letters and symbols (let's just call them <i>characters</i>). The computer uses a look-up table to find out which number corresponds to which character. That's why in the header of our HTML pages we write:</p>
+<pre>&lt;meta charset="utf-8"/&gt;</pre>
+<p>... which is telling the computer which look-up table it should use.</p>
+
+<p>You can see a list of characters with their codes at: <br/>
+<a href= "https://www.w3schools.com/html/html_charset.asp">W3School: HTML Encoding (Character Sets)</a><br/>
+For example, the capital letter "A" has the character code 65, and the small letter "a" has the character code 97.</p>
+
+<p>You can find a complete list of characters with their codes for the UTF-8 look-up table at: <a href= "https://unicode-table.com/en/">Unicode table</a></p>
+
+<p><i>Let's have some fun with that...</i><br/>
+What if we would just write a text in which all the character code number are shifted over by, say, 5. So the "A" (letter code 65) would become character code 70, which is "F".</p>
+
+<p>Then nobody could understand what you wrote &mdash; you wrote a secret message!</p>
+
+<p>Trouble is that it is quite cumbersome to look up the number code for each character, then add 5 to it, and then look up what the corresponding character for that is. But computers are really good at that sort of thing!</p>
+
+<h3>&lt;body&gt;</h3>
+<p>In the body we define three input fields:</p>
+<pre>&lt;h2&gt;&lt;i&gt;Encode&lt;/i&gt; window&lt;/h2&gt;
+&lt;textarea id="toENCODE" rows="5" cols="80"&gt;...&lt;/textarea&gt;
+&lt;button type="button" onclick="Encode()"&gt;Encode&lt;/button&gt;
+
+&lt;h2&gt;&lt;i&gt;Decode&lt;/i&gt; window&lt;/h2&gt;
+&lt;textarea id="toDECODE" rows="5" cols="80"&gt;...&lt;/textarea&gt;
+&lt;button type="button" onclick="Decode()"&gt;Decode&lt;/button&gt;
+
+&lt;h2&gt;&lt;i&gt;Decode&lt;/i&gt; output&lt;/h2&gt;
+&lt;textarea id='CLEAR' rows="5" cols="80"&gt;...&lt;/textarea&gt;</pre>
+<p>The input field use the same <code>&lt;textarea&gt;</code>, that we saw in the <b>Hello YOU</b> game, just this time we make it a lot bigger.</p>
+<p>For the first two input fields we add a "Submit" button, but we call one "Encode" and the other "Decode"</p>
+
+<h3>Encode()</h3>
+
+<p>In the <code>Encode()</code> function, we read what you typed with:</p>
+<pre>var Text = document.getElementById("toENCODE").value;
+var Tlen = Text.length;
+var Encoded = "";</pre>
+<p>Now we have the entire text in a single string called <code>Text</code>. We then step through this string character-by-character using the string method <code>Text.charCodeAt(i)</code> <a href= "#1">[1]</a>, which returns us the number code for the <i>i<sup>th</sup></i> character in the string. Then we just add our <code>Shift</code> value to that character code, and use the <code>String.fromCharCode(UniCode+Shift)</code> method <a href= "#2">[2]</a> to get the encoded character, which we then add to the <code>Encoded</code> string, which holds all the character we have already encoded:</p>
+<pre>for ( var i = 0; i&lt;Tlen ; i++ ) {
+ var UniCode = Text.charCodeAt(i)
+ Encoded += String.fromCharCode(UniCode+Shift);
+}</pre>
+<p>Then we write the encoded string in the <code>toDECODE</code> window.</p>
+
+<h3>Decode()</h3>
+
+<p>Same process, just that we subtract the <code>Shift</code> value, and write to the <code>CLEARTEXT</code> window.</p>
+
+
+<hr>
+<h4>References</h4>
+<blockquote>
+<a name="1">[1]</a> <a href= "https://www.w3schools.com/jsref/jsref_charcodeat.asp"> W3School: JavaScript String charCodeAt() Method</a> <br/>
+<a name="2">[2]</a> <a href= "https://www.w3schools.com/jsref/jsref_fromcharcode.asp"> W3School: JavaScript String fromCharCode() Method</a>
+</blockquote>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Stop Watch/Lap</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+li {
+ font-family: "Courier New";
+ font-weight:  bold;
+ font-size:    20pt;
+ margin-left:  20pt; }
+td {
+ width:        3em;
+ height:       3em;
+ font-size:    28pt;
+ text-align:   center;
+ background-color: lightgreen;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+// Init
+var StartDate;
+var StartTime = 0;
+var StartTime_lap = 0;
+var Timer;
+var LapsedTime_ms = 0;
+var Offset = 0;
+var Laps = [];
+
+function Start( ) {
+ // StartTimer
+ StartDate = new Date();
+ StartTime = StartDate.getTime();
+ StartTime_lap = StartTime;
+ Timer = setInterval(ShowTime,100);
+ // Buttons
+ NewButton = "<button type='button' onclick='Stop()'>Stop</button>"
+ document.getElementById("StartStopReset").innerHTML = NewButton;
+ NewButton = "<button type='button' onclick='Lap()'>Lap</button>"
+ document.getElementById("Lap").innerHTML = NewButton;
+}
+
+function Stop( ) {
+ // StopTimer
+  clearInterval(Timer);
+ document.getElementById("Lap").innerHTML = "";
+ // Buttons
+ NewButton = "<button type='button' onclick='Reset()'>Reset</button>"
+ document.getElementById("StartStopReset").innerHTML = NewButton;
+ NewButton = "<button type='button' onclick='Resume()'>Resume</button>"
+ document.getElementById("Resume").innerHTML = NewButton;
+}
+
+function Reset( ) {
+ // ResetDisplay
+ document.getElementById("Min").innerHTML = 0;
+ document.getElementById("Sec").innerHTML = 0;
+ document.getElementById("mil").innerHTML = 0;
+ document.getElementById("Laps").innerHTML = "";
+ document.getElementById("Resume").innerHTML = "";
+ Offset = 0;
+ Laps = [];
+ // Button
+ NewButton = "<button type='button' onclick='Start()'>Start</button>"
+ document.getElementById("StartStopReset").innerHTML = NewButton;
+}
+
+function Lap( ) {
+ // Print Lap
+ var NowDate = new Date();
+ var NowTime = NowDate.getTime()
+ var LapTime_ms = NowTime - StartTime_lap
+ var LapTime = ToMSm(LapTime_ms);
+ LapTime_str = LapTime[0] + ":" + LapTime[1] + "." + LapTime[2]
+ StartTime_lap = NowTime;
+ Laps.push(LapTime_str);
+ LapLog = "<ol>";
+ for (var i=0;i<Laps.length;i++) {
+  LapLog += '<li>' + Laps[i] + '</li>';
+ }
+ LapLog += '</ol>';
+ document.getElementById("Laps").innerHTML = LapLog;
+}
+
+function Resume() {
+ Offset = LapsedTime_ms;
+ document.getElementById("Resume").innerHTML =  "";
+ Start();
+}
+
+function ShowTime() {
+ var NowDate = new Date();
+ var NowTime = NowDate.getTime()
+ LapsedTime_ms = NowTime - StartTime + Offset;
+ LapsedTime = ToMSm(LapsedTime_ms);
+ 
+ document.getElementById("Min").innerHTML = LapsedTime[0];
+ document.getElementById("Sec").innerHTML = LapsedTime[1];
+ document.getElementById("mil").innerHTML = LapsedTime[2];
+}
+
+function ToMSm( ms ) {
+ var mil = ms%1000;
+ var Sec = Math.floor(ms/1000);
+ var Min = Math.floor(Sec/60);
+ Sec = Sec%60
+ return [Min, Sec, mil]
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Stop Watch with Lap Timer and Resume</h1>
+
+<table border="1">
+<tr><th>Min</th><th>Sec</th><th>mil</th></tr>
+<tr><td id="Min">0</td><td id="Sec">0<td id="mil">0</td></tr>
+</table>
+
+<p>
+<span id='StartStopReset'>
+<button type="button" onclick="Start()">Start</button>
+</span>
+<span id='Lap'></span>
+<span id='Resume'></span>
+</p>
+
+<h3>Lap Times</h3>
+<p id='Laps'></p>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Tic-Tac-Toe 2p - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Tic-Tac-Toe for 2 Players</h1>
+
+<h2>Instruction</h2>
+
+<h3>&lt;table&gt;</h3>
+<p>For <b>Tic-Tac-Toe</b> we need a 3x3 game board. A good way to create that is by using an <b>HTML Table</b>.</p>
+
+<p>You can find a good explanation of how tables are defined in HTML at <a href= "https://www.w3schools.com/html/html_tables.asp">W3School: HTML Tables</a>.</p>
+
+<h3>&lt;style&gt;</h3>
+<p>... but we also want the cells of the table to be square! We use <b>CSS</b> for that:</p>
+
+<pre>
+&lt;style&gt;
+...
+td {
+ margin:       5px;
+ font-size:    60pt;
+ width:        1em;
+ text-align: center;
+}
+&lt;/style&gt;
+</pre>
+
+<ol>
+ <li>The <code>margin</code> of 5 pixels makes sure that there is a bit of space between the cell border and the X or the O.</li>
+ <li>We want a BIG fond, so we set the <code>font-size</code> to 60 points!</li>
+ <li>To get a square cell we set the <code>width</code> of the cell to <code>1em</code>, which means the size of an "M".</li>
+ <li>We also want the X or O be in the center of the cell. That's what we do with the <code>text-align</code> option.</li>
+</ol>
+
+<p>For more on CSS check out:
+<a href= "https://www.w3schools.com/css/default.asp">
+W3School: CSS Tutorial</a></p>
+
+<h3>id and onclick</h3>
+<p>We need to make sure that our JavaScript program can find the right cells. For that we give each of the nine cells a different identifier or <code>id</code>. Here we just label them with the first 9 letters of the alphabet. Also, in JS you can click <em>anything</em>, so we define that when you click a cell the computer will call the function <code>MarkCell(i)</code>, which takes the cell identifier as its argument:</p>
+
+<p><code>&lt;td id="c" onclick="MarkCell('c')"&gt;&amp;nbsp;&lt;/td&gt;</code></p>
+
+<h3>"c" or 'c'</h3>
+<p>Why did we use double quotes <code>"</code> in one place and single quote <code>'</code> somewhere else?</p>
+
+<p>Parameter values that are letters or words (remember? they are called  <em>strings</em>) must be enclosed in quotes. You can use either, single or double, does not matter ... but if you need to put a string <em>inside</em> another string, then you must use the other type, so that the computer does not get confused about where they start and end.</p>
+
+<p>To learns more about strings, check out:  <a href= "https://www.w3schools.com/js/js_strings.asp">W3School: JS Strings</a></p>
+
+<h3>What is <code>&amp;nbsp;</code>?</h3>
+<p>HTML ignores "while spaces", so in the beginning, when our table is still empty, the table would be collapsed - ugly!<br/>
+ ... so we need to tell HTML <em>not</em> to ignore the space we put in. And <code>&amp;nbsp;</code> does just that! nbsp stand for <u>n</u>on-<u>b</u>reaking <u>sp</u>ace.</p>
+
+<h3>MarkCell(i)</h3>
+<p>The function <code>MarkCell(i)</code> uses only command you learned about already: It put first an "X" in the cell you clicked, and then toggles between "X" and "O" for the next time you click a cell.</p>
+
+<h3>Scope</h3>
+<p>A slightly confusing detail: We use <code>var Mark = "X";</code> <em>outside</em> the function definition but drop the <code>var</code> <em>inside</em> the function definition. Why?</p>  
+
+<p>When you define a variable outside of a function or some other block, this variable can be used anywhere, it called a <em>global</em> variable. If you define the same variable inside a block with the <code>var</code> command, that you create a <em>new</em> variable that exists only in this block. That's called a local variable. Confusing at first, but you'll get the hang of it!</p>
+
+<p>To learn more about global and local variable, check out: <a href= "https://www.w3schools.com/js/js_scope.asp">W3School: JS Scope</a></p>
+
+</body></html>

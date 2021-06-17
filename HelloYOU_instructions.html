@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Hello You - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Hello YOU</h1>
+
+<h2>Instruction</h2>
+
+<p>Now that you took a look at HTML and CSS, it's time to get to the last one of the three: JavaScript (or "JS" for short)</p>
+
+<p>JavaScript lets you "interact" with the web page, that means you get to do something and the web page changes in response, that makes it more like a game or an app.</p>
+
+<p>... but that gets us into <em>programming</em> -- so let's start with a video on what programming is about:</p>
+
+<center><a href= "https://www.khanacademy.org/computing/computer-programming/programming/intro-to-programming/v/programming-intro">
+Khan Academy: What is Programming?</a></center>
+
+<p>Now let's take a closer look at our first game <b>Hello YOU</b>. This game just greets you after you entered your name. <br/>
+... but how does it actually do that?</p>
+
+<ol>
+ <li>The in section <code>&lt;script&gt;</code>
+  we define a function that is called <code>SayHello()</code>. This function does all the magic.</li>
+  
+ <li>The command: <br/>
+  <code>&lt;textarea id="NAME" rows="1" cols="20"&gt;&lt;/textarea&gt;</code> <br/>
+ creates the box in the game in which you can type your name. (The size of the text box is 1 "<u>rows</u>" high and 20 "<u>col</u>umn<u>s</u>" wide, that is space for 20 characters.) </li>
+ 
+ <li>Once you are done typing your name you press the <b>Submit</b> button. This button is created with: <br/>
+  <code>&lt;button type="button" onclick="SayHello()"&gt;Submit&lt;/button&gt;</code></li>
+  
+ <li><code>onclick="SayHello()"</code> means, that when you click the button, the function <code>SayHello()</code> will be called.</li>
+ 
+ <li>The command: <br/>
+ <code>&lt;span id='Dialog'&gt;&lt;/span&gt;</code><br/>
+ just marks the spot where the <code>SayHello()</code> function will display the response.</li>
+ 
+ <li>The command: <br/>
+  <code>var NAME = document.getElementById("NAME").value;</code>, <br/>
+ allows the <code>SayHello()</code> function to read what you typed into the box and to store this text in a variable we called <code>NAME</code>.</li>
+ 
+ <li>The command: <br/>
+  <code>TEXT = "&lt;p&gt;Hi &lt;b&gt;" + NAME + "&lt;/b&gt;! It is nice to meet you.&lt;/p&gt;";</code> <br/>
+  create a text variable (called <code>TEXT</code>) that contains the greeting as well as the variable with your name.</li>
+ 
+ <li>The command:
+  <code>document.getElementById("Dialog").innerHTML = TEXT;</code><br/>
+ writes the content of the <code>TEXT</code> variable into our web page in the spot that we marked in step 5.</li>
+ 
+ <li>... and this is all there is to it!</li>
+</ol>
+
+<h2>Challenge</h2>
+
+<p><em>Can you add more questions to the <b>Hello YOU</b> game?</em></p>
+
+<h3>Tips</h3>
+
+<p>For that you will need to add more functions similar to the <code>SayHello()</code> one.</p>
+
+<h2>Resources</h2>
+
+<p>You can use <a href= "https://www.w3schools.com/js/default.asp" target="_blank">W3School: JavaScript Tutorial</a> as a quick reference for JS command. They also have nice tutorials and exercises.</p>
+
+<p>You can find more information on the command used in the <b>Hello YOU</b> game at:</p>
+
+<table>
+ <tr>
+  <td><code>getElementById()</code></td><td>:</td>
+  <td><a href= "https://www.w3schools.com/js/js_intro.asp">
+  W3School: JS Introduction</a></td>
+ </tr>
+ <tr>
+  <td><code>var NAME = ...</code></td><td>:</td>
+  <td><a href= "https://www.w3schools.com/js/js_statements.asp">
+  W3School: JS Statements</a></td>
+  </tr>
+  <tr><tr>
+  <td><code>function SayHello( )</code></td><td>:</td>
+  <td><a href= "https://www.w3schools.com/js/js_functions.asp">
+  W3School: JS Functions</a></td>
+  <tr><tr>
+  <td>Strings</td><td>:</td>
+  <td><a href= "https://www.w3schools.com/js/js_strings.asp">
+  W3School: JS Strings</a></td>
+ </tr>
+</table>
+
+<h3>What are "strings" anyway?</h3>
+
+<p>In JS any kind of "text", when used in a variable, is calls a "string", because it is kind of a string of characters. All strings have to be enclosed in quotes, either double or single quotes. Let's look again the command:</p>
+
+<pre>
+NAME = "Alice",
+TEXT = "&lt;p&gt;Hi &lt;b&gt;" + NAME + "&lt;/b&gt;! It is nice to meet you.&lt;/p&gt;";</pre>
+
+<p><code>NAME</code> is a string variable that we set to "Alice". <code>TEXT</code> is also a string variable, but we build this string out of several parts:</p>
+<ol>
+ <li><code>"&lt;p&gt;Hi &lt;b&gt;"</code>: A string that even contains HTML tags.</li>
+ <li><code>NAME</code>: A string variable, that will get replaced with its value, which here is "Alice".</li>
+ <li><code> "&lt;/b&gt;! It is nice to meet you.&lt;/p&gt;"</code>: Another string that contains HTML tags.</li>
+</ol>
+
+<p>... and we stick them together with "+" (for strings that is also called <em>concatenating</em> - just some fancy word for it...)</p>
+
+<p>What is the value of the string variable <code>TEXT</code> the end?</p>
+
+<pre>&lt;p&gt;Hi &lt;b&gt;Alice&lt;/b&gt;! It is nice to meet you.&lt;/p&gt;</pre>
+
+<p>... and the browser will display that as:</p>
+
+<p>Hi <b>Alice</b>! It is nice to meet you.</p>
+
+</body></html>

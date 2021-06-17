@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="utf-8"/>
+ <title>Meeting Planner</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  14pt; }
+table {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:   0pt;
+ border-collapse: collapse;
+}
+th, td { vertical-align: top; }
+.right { text-align: right; }
+
+.blu {
+ color: white;
+ background-color: #1f6ab2;
+}
+.red {
+ color: white;
+ background-color: #ed1c20; }
+.wht {
+ color: gray; }
+.gry {
+ text-align: center;
+ width: 12pt;
+ background-color: #dddddd; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+
+function stepup ( ) {
+ var stt = document.getElementById("0").innerHTML
+ var jp = 0;
+ for ( var jc=0; jc<24; jc++ ) {
+  var cur = document.getElementById(jc).innerHTML
+  document.getElementById(jp).innerHTML = cur;
+  jp = jc;
+ }
+ document.getElementById("23").innerHTML = stt;
+};
+
+function stepdn ( ) {
+ var end = document.getElementById("23").innerHTML
+ var jp = 23;
+ for ( var jc=22; jc>-1; jc-- ) {
+  var cur = document.getElementById(jc).innerHTML
+  document.getElementById(jp).innerHTML = cur;
+  jp = jc;
+ }
+ document.getElementById("0").innerHTML = end;
+};
+
+function firstView () {
+ var TIME = "Winter"
+ var Zons = ["CA", "NY", "UK", "EU", "IN", "CN", "JP"];
+ var Offs = [   0,    3,    8,    9,   13,   16,   17];
+// var TIME = "Regular Time";
+// var Offs = [0  3 8  9    13   16       17]
+// set TIME "Transition"
+// set Offs [list 0  3 7  8     12   15       16]
+
+var Zlen = Zons.length;
+ var TBL = "<h2>" + TIME + "</h2>\n<table border='1'><tr>";
+ for ( var ic=0; ic<Zlen; ic++ ) {
+  TBL = TBL.concat("<th>" + Zons[ic] + "</th>\n");
+ }
+ TBL = TBL.concat("</tr><tr>\n");
+ for ( var ic=0; ic<Zlen; ic++ ) {
+  if ( Zons[ic] == "IN" ) {
+   var Ltim = "+" + Offs[ic] + "<sup><sup><u>30</u></sup></sup>";
+  } else {
+   var Ltim = "+" + Offs[ic] + "<sup><sup><u>00</u></sup></sup>";
+  };
+  TBL = TBL.concat("<th>" + Ltim + "</th>\n");
+ }
+ TBL = TBL.concat("</tr>");
+ for ( var it=0; it<24; it++ ) {
+  TBL = TBL.concat("<tr id='" + it + "'>\n");
+  for ( var ic=0; ic<Zlen; ic++ ) {
+   var Rtim = (6+it+Offs[ic])%24;
+   if ( Zons[ic] == "IN" ) {
+    var Ltim = Rtim + "<sup><sup><u>30</u></sup></sup>";
+   } else {
+    var Ltim = Rtim + "<sup><sup><u>00</u></sup></sup>";
+   }
+   var Day = Math.floor((it+Offs[ic])/24);
+   if ( Day == 1 ) {
+    var cls = "red";
+   } else {
+    var cls = "blu";
+   }
+   if ( Rtim < 7 || Rtim > 21 ) {
+    var cls = "wht";
+   }
+   TBL = TBL.concat("<td class='" + cls + "'>" + Ltim + "</td>\n");
+  }
+ TBL = TBL.concat("</tr>");
+ }
+ TBL = TBL.concat("</table>");
+	document.getElementById("TBL").innerHTML = TBL;
+};
+window.onload = firstView;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+
+<h1>Meeting Planner</h1>
+<table><tr><td>
+<h2>&nbsp;</h2><h2>&nbsp;</h2>
+<table border="1">
+<tr><td onclick='stepup()' class="gry"><b>&uarr;</b></td></tr>
+<tr><td onclick='stepdn()' class="gry"><b>&darr;</b></td></tr>
+</table>
+</td>
+<td><span id="TBL"></span></td>
+</tr></table>
+
+</body></html>

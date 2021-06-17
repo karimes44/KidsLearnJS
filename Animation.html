@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>10x10 Animation</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+td {
+ font-size:    28pt;
+ width:        1em;
+ margin:       5px;
+ text-align:   center;
+}
+button { font-size:    20pt; }
+.c0 { background-color: #000000 }
+.c1 { background-color: #ff0000 }
+.c2 { background-color: #00ff00 }
+.c3 { background-color: #0000ff }
+.c4 { background-color: #ffff00 }
+.c5 { background-color: #00ffff }
+.c6 { background-color: #ff00ff }
+.c7 { background-color: #ffffff }
+.c8 { background-color: #880088 }
+.c9 { background-color: #008888 }
+.cA { background-color: #888800 }
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Frames = [
+["0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000"],
+
+["1000000001",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "1000000001"],
+
+["0200000020",
+ "2000000002",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "2000000002",
+ "0200000020"],
+
+["0030000300",
+ "0300000030",
+ "3000000003",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "3000000003",
+ "0300000030",
+ "0030000300"],
+
+["0004004000",
+ "0040000400",
+ "0400000040",
+ "4000000004",
+ "0000000000",
+ "0000000000",
+ "4000000004",
+ "0400000040",
+ "0040000400",
+ "0004004000"],
+
+["0000550000",
+ "0005005000",
+ "0050000500",
+ "0500000050",
+ "5000000005",
+ "5000000005",
+ "0500000050",
+ "0050000500",
+ "0005005000",
+ "0000550000"],
+
+["0000000000",
+ "0000660000",
+ "0006006000",
+ "0060000600",
+ "0600000060",
+ "0600000060",
+ "0060000600",
+ "0006006000",
+ "0000660000",
+ "0000000000"],
+
+["0000000000",
+ "0000000000",
+ "0000880000",
+ "0008008000",
+ "0080000800",
+ "0080000800",
+ "0008008000",
+ "0000880000",
+ "0000000000",
+ "0000000000"],
+
+["0000000000",
+ "0000000000",
+ "0000000000",
+ "0000990000",
+ "0009009000",
+ "0009009000",
+ "0000990000",
+ "0000000000",
+ "0000000000",
+ "0000000000"],
+
+["0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000AA0000",
+ "0000AA0000",
+ "0000000000",
+ "0000000000",
+ "0000000000",
+ "0000000000"],
+
+];
+
+var Nframes = Frames.length
+var i = 1;
+var Timer;
+
+function DrawScreen ( ) {
+ var TBL = "<table border='1'>";
+ for (var ir=0;ir<10;ir++) {
+  TBL += "<tr>";
+  for (var ic=0;ic<10;ic++) {
+   nid = ic + 10*ir;
+   TBL += "<td id='" + nid + "'>&nbsp;</td>";
+  }
+  TBL += "</tr>";
+ }
+ TBL += "</table>";
+ //alert(TBL);
+ document.getElementById('TBL').innerHTML = TBL;
+}
+
+function ShowFrame ( ) {
+ var Frame = Frames[i];
+ for (var ir=0;ir<10;ir++) {
+  Row = Frame[ir];
+  for (var ic=0;ic<10;ic++) {
+   Cells = Row.split("");
+   Class = Cells[ic];
+   CellID = ic + 10*ir;
+   // alert(CellID + " : c" + Class);
+   document.getElementById(CellID).className = "c" + Class;
+  }
+ }
+ i=(i+1)%Nframes;
+}
+
+function Animate () {
+ NewButton = "<button type='button' onclick='Stop()'>Stop</button>"
+ document.getElementById("BUTTON").innerHTML = NewButton;
+ Timer = setInterval(ShowFrame,500);
+}
+
+function Stop () {
+ NewButton = "<button type='button' onclick='Animate()'>Animate</button>"
+ document.getElementById("BUTTON").innerHTML = NewButton;
+ clearInterval(Timer);
+}
+
+window.onload = DrawScreen;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>10x10 Animation Loop</h1>
+
+<span id="BUTTON">
+<button type="button" onclick="Animate()">Animate</button>
+</span>
+
+<span id='TBL'>(Screen goes here...)</span>
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Address Book</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+.card {
+ font-size:     12pt;
+ text-align:  center;
+ width:         20em;
+ border-style: solid;
+ border-width:   2px;
+ border-radius:  4px;
+ padding-left:   1em;
+ padding-right:  1em;
+ padding-bottom: 1px;
+ margin-left:   12em;
+ margin-bottom:  5px;
+ border-color:  gray;
+ background-color: lightblue;
+}
+textarea, select {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+.group {
+ text-align: left;
+ background-color: darkgray;
+ color: navy;
+ margin-left:  0em;
+}
+.hide * { display: none; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Cards;
+var iCards;
+var MonthByName = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+'July', 'August', 'September', 'October', 'November', 'December']
+
+function ReadCards ( ) {
+ iCards = [];
+ Cards = document.getElementsByClassName("card");
+ //alert(Cards.length);
+ for ( var i=0;i<Cards.length;i++ ) {
+  Cards[i].classList.remove("hide");
+  iCards.push(i);
+ }
+}
+
+function SortCards () {
+ crit = document.getElementById("SORT").value
+ if ( crit == "none" ) return
+ ReadCards();
+ if ( crit == "firstname" || crit == "lastname" ) {
+  iCards.sort(function (a, b) {
+   var txtA= Cards[a].getElementsByClassName(crit)[0].innerHTML.toUpperCase();
+   var txtB= Cards[b].getElementsByClassName(crit)[0].innerHTML.toUpperCase();
+   //alert(txtA + " > " + txtB);
+   if (txtA < txtB) return -1
+   if (txtA > txtB) return  1
+   return 0
+  })
+ };
+ 
+ if ( crit == "bday" ) {
+  iCards.sort(function (a, b) {
+   var bdayA= Cards[a].getElementsByClassName('bday')[0].innerHTML;
+   var bdayB= Cards[b].getElementsByClassName('bday')[0].innerHTML;
+   var bdayA_ms = Date.parse(bdayA);
+   var bdayB_ms = Date.parse(bdayB);
+   //alert(bdayA_ms+ " > " + bdayA_ms);
+   if (bdayA_ms < bdayB_ms) return -1
+   if (bdayA_ms > bdayB_ms) return  1
+   return 0
+  })
+ };
+
+ if ( crit == "month" ) {
+  iCards.sort(function (a, b) {
+   var bdayA= Cards[a].getElementsByClassName('bday')[0].innerHTML;
+   var bdayB= Cards[b].getElementsByClassName('bday')[0].innerHTML;
+   var bdayA_ms = Date.parse(bdayA)
+   var bdayB_ms = Date.parse(bdayB)
+   var DateA = new Date(bdayA_ms);
+   var DateB = new Date(bdayB_ms);
+   //alert(DateA.getMonth() + " > " + DateB.getMonth());
+   if (DateA.getMonth() < DateB.getMonth()) return -1
+   if (DateA.getMonth() > DateB.getMonth()) return  1
+   if (DateA.getDate()  > DateB.getDate())  return  1
+   if (DateA.getDate()  < DateB.getDate())  return -1
+   return 0
+  })
+ };
+
+ var AddBook = ""
+ //alert(Cards.length);
+ for ( var i=0;i<iCards.length;i++ ) {
+  Cards[i].classList.remove("hide");
+  var Group = "?"
+  if ( crit == "firstname" || crit == "lastname") {
+   var name = Cards[iCards[i]].getElementsByClassName(crit)[0].innerHTML;
+   Group = name.charAt(0);
+   //alert(i + ") " + Group + ":" + name);
+  };
+  
+  if ( crit == "bday" ) {
+   var Group = Cards[iCards[i]].getElementsByClassName('bday')[0].innerHTML;
+   //alert(i + ") " + Group);
+  };
+  
+  if ( crit == "month" ) {
+   var bday= Cards[iCards[i]].getElementsByClassName('bday')[0].innerHTML;
+   var bday_ms = Date.parse(bday)
+   var DATE = new Date(bday_ms);
+   var Group = MonthByName[DATE.getMonth()];
+   //alert(i + ") " + DATE.getMonth() + " = " + Group);
+  };
+
+  Cards[iCards[i]].getElementsByClassName('group')[0].innerHTML = i+1 + ") &nbsp;" + Group;
+  AddBook += Cards[iCards[i]].outerHTML;
+ }
+ //alert(AddBook);
+ document.getElementById("ShowCards").innerHTML = AddBook;
+}
+
+function SearchCards () {
+ crit = document.getElementById("SEARCH").value;
+ if ( crit == "none" ) return
+ ReadCards();
+
+ SearchString = document.getElementById("SearchString").value;
+
+ for ( var i=0;i<Cards.length;i++ ) {
+  if ( crit == "firstname" || crit == "lastname") {
+   var name = Cards[i].getElementsByClassName(crit)[0].innerHTML;
+   if ( name.search(SearchString) != -1 ) {
+    Cards[i].classList.remove("hide");
+   } else {
+    Cards[i].classList.add("hide");
+   }
+  }
+  if ( crit == "bday") {
+   var bday= Cards[iCards[i]].getElementsByClassName('bday')[0].innerHTML;
+   //alert(bday + " : " + SearchString);
+   if ( bday.search(SearchString) != -1 ) {
+    Cards[i].classList.remove("hide");
+   } else {
+    Cards[i].classList.add("hide");
+   }
+  }
+ }
+}
+
+window.onload = ReadCards;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Address Book</h1>
+
+<table>
+<tr><th>Sort by:</th>
+<td><select id='SORT' onchange='SortCards()'>
+ <option value='none'>No Sort</option>
+ <option value='firstname'>First Name</option>
+ <option value='lastname'>Last Name</option>
+ <option value='bday'>Birthday</option>
+ <option value='month'>Birth Month</option>
+</select></td>
+<th>Search by:</th>
+<td><select id='SEARCH' onchange='SearchCards()'>
+ <option value='none'>No Search</option>
+ <option value='firstname'>First Name</option>
+ <option value='lastname'>Last Name</option>
+ <option value='bday'>Birthday</option>
+</select></td>
+<th>Search String:</th>
+<td><textarea id="SearchString" rows="1" cols="20"></textarea></td>
+</tr></table>
+
+
+<span id="ShowCards">
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Brandy</span>
+ <span class="lastname">Chastain</span></h2>
+ <p class="street">2168 Alder Rd.</p>
+ <p class="city">San Jose</p>
+ <p class="bday">July 21, 1968</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Javier</span>
+ <span class="lastname">Hernandez</span></h2>
+ <p class="street">188 Birch Circle</p>
+ <p class="city">Guadalajara</p>
+ <p class="bday">June 1, 1988</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Gao</span>
+ <span class="lastname">Leilei</span></h2>
+ <p class="street">1580 Chestnut Ave.</p>
+ <p class="city">Beijing</p>
+ <p class="bday">July 15, 1980</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Shoni</span>
+ <span class="lastname">Schimmel</span></h2>
+ <p class="street">492 Dogwood St.</p>
+ <p class="city">Pendleton</p>
+ <p class="bday">	May 4, 1992</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Michael</span>
+ <span class="lastname">Jordan</span></h2>
+ <p class="street">1763 Elm Place</p>
+ <p class="city">Brooklyn</p>
+  <p class="bday">February 17, 1963</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Madison</span>
+ <span class="lastname">Bumgarner</span></h2>
+ <p class="street">189 Filbert Court</p>
+ <p class="city">Hickory</p>
+ <p class="bday">August 1, 1989</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Billie Jean</span>
+ <span class="lastname">King</span></h2>
+ <p class="street">2243 Hemlock Rd.</p>
+ <p class="city">Long Beach</p>
+ <p class="bday">November 22, 1943</p>
+</div>
+
+<div class="card">
+ <p class="group"></p>
+ <h2><span class="firstname">Shelly-Ann</span>
+ <span class="lastname">Fraser-Pryce</span></h2>
+ <p class="street">2786 Juniper St.</p>
+ <p class="city">Klingston</p>
+ <p class="bday">December 27, 1986</p>
+</div>
+</span>
+
+</body>
+</html>

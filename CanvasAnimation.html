@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Canvas/Animation</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  14pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+table {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ border-collapse: collapse;
+}
+td { 
+ width:        1em;
+ text-align:   center; }
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Canvas/Animation</h1>
+
+<table>
+<tr>
+<th>Step X:</th><td><textarea id="dx" rows="1" cols="4"> 2</textarea></td>
+<th>Step Y:</th><td><textarea id="dy" rows="1" cols="4"> 1</textarea></td> 
+<th>Speed: </th><td><textarea id="Sp" rows="1" cols="4">10</textarea></td> 
+<td colspan="4" id="StartStop">
+<button type="button" onclick="Start()">Start</button></td>
+</tr>
+</table>
+<br/>
+
+<canvas id="Canvas" width="600" height="600" style="border:3px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<!-- _______________________________________________________________ -->
+<script>
+
+var c = document.getElementById("Canvas");
+ctx = c.getContext("2d");
+var W = c.width ; var H = c.height;
+// alert(H + "-" + W);
+var x = W/2 ; var y  = H/2;
+var radius = 10;
+
+function Move () {
+ ctx.clearRect(0, 0, W, H)
+ x += Sp*dx; y += Sp*dy
+ ctx.beginPath()
+ ctx.arc(x, y, radius, 0 , 2 * Math.PI);
+ ctx.fillStyle = "red";
+ ctx.fill();
+ ctx.stroke();
+ 
+ if ( x < radius || x > H - radius ) { dx = -dx } 
+ if ( y < radius || y > W - radius ) { dy = -dy } 
+}	
+	
+function Start () {
+ dx = Number(document.getElementById("dx").value);
+ dy = Number(document.getElementById("dy").value);
+ Sp = Number(document.getElementById("Sp").value);
+ NewButton = "<button type='button' onclick='Stop()'>Stop</button>"
+ document.getElementById("StartStop").innerHTML = NewButton;
+ Timer = setInterval(Move,20);
+}
+
+function Stop () {
+ NewButton = "<button type='button' onclick='Start()'>Start</button>"
+ document.getElementById("StartStop").innerHTML = NewButton;
+ clearInterval(Timer);
+}
+</script>
+
+</body>
+</html>

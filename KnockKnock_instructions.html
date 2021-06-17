@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Knock Knock - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Knock Knock</h1>
+
+<h2>Instruction</h2>
+
+<p>With just a few changes to the <b>Hello You</b> game, we can make a <b>Knock, Knock</b> joke game!</p>
+
+<ol>
+ <li>In this game the function <code>KnockKnock(i)</code> has an argument: <code>i</code>. We use this counter to step through the lines of the joke.</li>
+  
+ <li>The command <code>&lt;span id='Dialog'&gt;&lt;/span&gt;</code> section now contains <em>all</em> the text. The <code>KnockKnock(i)</code> function can replace the entire text.</li>
+ 
+ <li>At the beginning in the <code>Dialog</code> area the button calls <code>KnockKnock(1)</code>, so the argument is <code>1</code>.</li>
+  
+ <li>In the <code>KnockKnock(i)</code> function, we check if the variable <code>i</code> is <code>1</code>. If so, we write back to the <code>Dialog</code> area: <br/>
+ <code>TEXT = "&lt;h1&gt;Boo&lt;/h1&gt;"
+   + '&lt;button type="button" onclick="KnockKnock(2)"&gt;Boo Who?&lt;/button&gt;'</code> <br/>
+ ... so we are creating a new button which will call <code>KnockKnock(2)</code>, i.e, with the argument <code>2</code>.</li>   
+   
+ <li>... now that will call the same <code>KnockKnock(i)</code> function, but something <em>else</em> will happen as a result! We write back: <br/>
+  <code>TEXT = "&lt;h1&gt;Please don't cry!&lt;/h1&gt;";</code>.</li>
+</ol>
+
+<h2>Challenge</h2>
+
+<p><em>Can you add more <code>else if</code> blocks, so that the game continues to tell more "Knock, knock" jokes?</em></p>
+
+<p>Here are a few examples, but I bet you know even better ones!</p>
+
+<pre>
+Knock, knock.
+Who's there?
+Anna Partridge.
+Anna Partridge who?
+Anna Partridge in a pear tree!
+
+Knock, knock.
+Who's there?
+Doris.
+Doris who?
+Doris open, so I thought I'd drop by.
+</pre>
+
+<h2>Resources</h2>
+
+<p>You can use <a href= "https://www.w3schools.com/js/default.asp" target="_blank">W3School: JavaScript Tutorial</a> as a quick reference for JS command.</p>
+
+<p>You can find more information about <code>if () { ... } else { ... }</code> statements at: <a href= "https://www.w3schools.com/js/js_if_else.asp">W3School: JS Conditions</a></p>
+
+</body></html>

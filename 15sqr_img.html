@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>15sqr img</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    20pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    22pt;
+ margin-left:  10pt;
+ color:        navy; }
+.inner {
+ padding:      0px 0px 0px 0px;
+ margin:       0px 0px 0px 0px;
+ border-collapse: collapse;
+ border:       1px solid black;
+}
+td {
+ padding:      4px 4px 0px 4px;
+ margin:       0px 0px 0px 0px;
+ border-collapse: collapse;
+ border:       1px solid black;
+ height:       150px;
+ width:        150px;
+ text-align:  center;
+}
+.gry {
+ background-color: lightgray;
+ color: lightgray;
+}
+.blk {
+ background-color: white;
+ color: black; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+// Global Variables
+var iter=0;
+var echostr = "";
+var st= [];
+ st[1] = [2,5];      st[2] = [3,6,1];     st[3]  = [4,7,2];       st[4] = [8,3];
+ st[5] = [6,9,1];    st[6] = [7,10,5,2];  st[7]  = [8,11,6,3];    st[8] = [12,7,4];
+ st[9] = [10,13,5]; st[10] = [11,14,9,6]; st[11] = [12,15,10,7]; st[12] = [16,11,8];
+st[13] = [14,9];    st[14] = [15,13,10];  st[15] = [16,14,11];   st[16] = [15,12];
+
+function move(id) {
+ iter++;
+ var cval = document.getElementById(id).innerHTML;
+ for ( var jj=0; jj<st[id].length; jj++ ) {
+  var cc = st[id][jj];
+  var cv = document.getElementById(cc).innerHTML;
+  if ( cv == 0 ) {
+   document.getElementById(cc).innerHTML = cval;
+   document.getElementById(cc).setAttribute("class","blk");
+   document.getElementById(id).innerHTML = "0";
+   document.getElementById(id).setAttribute("class","gry");
+  }
+ }
+ document.getElementById("ITER").innerHTML = "Number of Moves: " + iter;
+}
+
+function firstView() {
+ var z = 16;
+ for ( var j=0; j<800; j++ ) {
+  var i = Math.floor(Math.random() * st[z].length);
+  move(st[z][i]);
+  //alert("j) " + j + " z: " + z + " i/len: " + i + "/" + st[z].length + " zn: " + st[z][i]);
+  z = st[z][i];
+ }
+ iter = 0;
+ document.getElementById("ITER").innerHTML = "Number of Moves: " + iter;
+}
+
+window.onload = firstView;
+</script>
+</head>
+<!-- _______________________________________________________________ -->
+<body>
+<h1>15 Squares Puzzle Game</h1>
+
+<table class="inner"><tr>
+<td id= "1" onclick='move( "1")' class="blk"><img src="./img/LK_1.png"></td>
+<td id= "2" onclick='move( "2")' class="blk"><img src="./img/LK_2.png"></td>
+<td id= "3" onclick='move( "3")' class="blk"><img src="./img/LK_3.png"></td>
+<td id= "4" onclick='move( "4")' class="blk"><img src="./img/LK_4.png"></td>
+</tr><tr>
+<td id= "5" onclick='move( "5")' class="blk"><img src="./img/LK_5.png"></td>
+<td id= "6" onclick='move( "6")' class="blk"><img src="./img/LK_6.png"></td>
+<td id= "7" onclick='move( "7")' class="blk"><img src="./img/LK_7.png"></td>
+<td id= "8" onclick='move( "8")' class="blk"><img src="./img/LK_8.png"></td>
+</tr><tr>
+<td id= "9" onclick='move( "9")' class="blk"><img src="./img/LK_9.png"></td>
+<td id="10" onclick='move("10")' class="blk"><img src="./img/LK_10.png"></td>
+<td id="11" onclick='move("11")' class="blk"><img src="./img/LK_11.png"></td>
+<td id="12" onclick='move("12")' class="blk"><img src="./img/LK_12.png"></td>
+</tr><tr>
+<td id="13" onclick='move("13")' class="blk"><img src="./img/LK_13.png"></td>
+<td id="14" onclick='move("14")' class="blk"><img src="./img/LK_14.png"></td>
+<td id="15" onclick='move("15")' class="blk"><img src="./img/LK_15.png"></td>
+<td id="16" onclick='move("16")' class="gry">0</td>
+</tr></table>
+
+<p id="ITER">0</p>
+
+</body></html>

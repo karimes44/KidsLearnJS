@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Instr:MeetingPlanner</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  16pt; }
+pre {
+ font-family: "Courier New";
+ font-weight:  bold;
+ font-size:    16pt;
+ margin-left:  20pt; }
+tt {
+ font-family: "Courier New";
+ font-weight:  bold;
+ font-size:    16pt; }
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Meeting Planner</h1>
+<h2>Instructions</h2>
+
+<p>The <i>Meeting Planner</i> shows which time in California (<b>CA</b>) corresponds to which time in New York (<b>NY</b>), England (<b>UK</b>), Central Europe (<b>EU</b>), India (<b>IN</b>), China/Taiwan/Singapore (<b>CN</b>), and Japan/Korea (<b>KR</b>)</p>
+
+<ol>
+ <li>Click the up- or down-arrows to focus on the time your are interested.</li>
+ <li>The <i>Meeting Planner</i> assumes that people are somewhat ok to take a meeting between the hours of 7am=7<sup><sup><u>00</u></sup></sup> and 9pm=21<sup><sup><u>00</u></sup></sup> in their respective local time.</li>
+ <li>The hours cells within this time range are shown in either blue, or red.</li>
+ <li>Hours cells shown in red correspond to a day <i>later</i>.</li>
+ <li></li>
+</ol>
+
+<p>In the code, you can define the time zones (<tt>Zons</tt>) you are interested in and define the time off-set (<tt>Offs</tt>) between CA and the respective time zone with:</p>
+
+<pre>
+ var TIME = "Winter"
+ var Zons = ["CA", "NY", "UK", "EU", "IN", "CN", "JP"];
+ var Offs = [   0,    3,    8,    9,   13,   16,   17];
+</pre>
+
+<p>You can and and remove time zones as you wish, but make sure you have as many <tt>Offs</tt> as you have <tt>Zons</tt>.</p>
+
+<p>The <tt>TIME</tt> variable lets you keep track if the offsets correspond to Summer Time, Winter Time, or a Transition Time, that is when for example the USA changes to Summer Time before Central Europe.</p>
+</body>
+</html>

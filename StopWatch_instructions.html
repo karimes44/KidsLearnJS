@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Stop Watch - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Stop Watch</h1>
+<h2>Instructions</h2>
+
+<h3>How do computers keep track of time?</h3>
+
+<p>Computers have built-in clocks, and JS has special function that let us read this clock:</p>
+<pre>StartDate = new Date();
+StartTime = StartDate.getTime();</pre>
+<p>The command <code>new Date()</code> is what reads the clock, but in some internal format called a <b>Date Object</b>. To get what we want from this date object we have to use a <b>.get*()</b> method. Here, we use the <code>.getTime()</code> method, which gives us the number of milliseconds that have passed since January 1, 1970. (Why do I need that? &mdash; well, hang in there...)</p>
+
+<p>To learn more about the <b>Date Object</b> and the <b>.get*()</b> methods, check out:
+<a href= "https://www.w3schools.com/js/js_dates.asp">W3School: JS Dates</a>
+and <a href= "https://www.w3schools.com/js/js_date_methods.asp">W3School: JS Date Get Methods</a>.
+
+<h3>Timer</h3>
+<p>For a stop watch we don't actually need to know what time it is, but just how much time has passed. And we need a function that check the clock every so often. We do that with:</p>
+<pre>Timer = setInterval(ShowTime,100);</pre>
+<p>This command will call the function <b>ShowTime</b> about every 100 milliseconds. This is not very precise, if the computer is busy with something else it may take a few milliseconds longer &mdash; but that does not matter much to us, because we will check what the right time is by reading the clock. To stop the timer, we call the function:</p>
+<pre>clearInterval(Timer);</pre>
+
+
+<p>For more information on <code>setInterval</code> and <code>clearInterval</code> take a look at:
+<a href= "https://www.w3schools.com/js/js_timing.asp">W3School: JS Timing</a>.</p>
+
+<h3><code>&lt;body&gt;</code></h3>
+<p>For the stop watch we again use a table to display the minutes, seconds, milliseconds. We use CSS to change the style of <code>&lt;td&gt;</code> element of the table: a box shape with the big fond size and the text shown in the center. Then we have a <b>Start</b> button that calls the <code>Start()</code> function, which reads the current time and starts the Timer.</b> 
+
+<h3>ShowTime()</h3>
+<p>The <code>ShowTime()</code> function, which is called about every 100 milliseconds, reads again the correct current time and gets the corresponding milliseconds that have passed since January 1, 1970:</p>
+<pre>var NowDate = new Date();
+var NowTime = NowDate.getTime()</pre>
+<p>Now we can compute the number of milliseconds that have lapsed since we started the stop watch by simply taking the difference and displaying it on the  face of our stop watch:</p>
+<pre>LapsedTime = ToMSm(NowTime - StartTime);
+LapsedTime_ms = NowTime - StartTime;
+LapsedTime = ToMSm(LapsedTime_ms);</pre>
+<p>But we don't want to show the lapsed time as a long millisecond number, but convert it to minutes, seconds, and milliseconds. The function <code>ToMSm(ms)</code> does that for us. It returns these three values in an array, here called <code>LapsedTime</code>. We then write minutes, seconds, and milliseconds to the face of the stop whath, by accessing the three elements of the array:</p>
+<pre>document.getElementById("Min").innerHTML = LapsedTime[0];
+document.getElementById("Sec").innerHTML = LapsedTime[1];
+document.getElementById("mil").innerHTML = LapsedTime[2];</pre>
+
+<p>And that's out Stop Watch! <br/>
+Would it be nice to have a lap time to go with it? Right, so let's make one...</p>
+</body>
+</html>

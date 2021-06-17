@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Wack-a-Mole (timed) - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Wack-a-Mole (timed)</h1>
+<h2>Instructions</h2>
+
+<h3>Overview</h3>
+<p>To make it a "real" game we need to add goal, or a challenge! <br/>
+How about <i>"Wack as many moles as you can in 20 sec"</i> ?</p>
+
+<p>For that we need just a few changes ... first, we add two global variables:</p>
+<pre>var GameTime = 20;
+var Nw = 0;</pre>
+<p><code>GameTime</code> defines how long the game is played (here 20 seconds), and <code>Nw</code> is the counter for the number of wacks. After each wack we add one to the counter with <code>Nw++;</code></p>
+
+<h3><code>Play()</code></h3>
+<p>If <code>iprevious == -1</code>, that is, we are just starting the game, we first remove the button, so you can't start the game again while it is already going. This we do with:</p>
+<pre>document.getElementById('BUTTON').innerHTML = "";</pre>
+<p>Then we do something new: We start a timer that, after 20 seconds will call the <code>GameUp</code> function:</p>
+<pre>STOP = setTimeout(GameUp, GameTime*1000)</pre>
+<p>You can learn more about this function at: <a href= "https://www.w3schools.com/js/js_timing.asp">W3School: JS Timing</a></p>
+
+<h3><code>GameUp()</code></h3>
+<p>This function pops up an alert message, that also shows how many moles you wacked, and then erases the game board, so that you cannot keep playing anymore without restarting the game.</p>
+</body>
+</html>

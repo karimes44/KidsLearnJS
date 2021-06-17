@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>15sqr - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>15 Squares Puzzle Game</h1>
+<h2>Instructions</h2>
+
+<p>Have you played the 15 Squares Puzzle before?</p>
+<p>To solve the puzzle, you have to slide a puzzle pieces into the empty tile and do it such that in the end the number are in acceding order, from top left to bottom right.</p>
+
+<p>You can find more information and interesting historical notes about it at: <a href= "https://en.wikipedia.org/wiki/15_puzzle">Wikipedia: 15 puzzle</a></p>
+
+<h2>How to program the game?</h2>
+
+<h3>&lt;body&gt;</h3>
+<p>For the game board we again use an HTML table, just like we did for <b>Tic-Tac-Toe</b>, but this time 4x4. We use a bit more complicated CSS style definition to make it look good.</p>
+<p>We number the 16 tiles from 1 to 16 and use that number as the tile id.</p>
+<p>We put the puzzle piece number into all the filled tiles and give them the CSS class: <code>class="blk"</code>. We write the 0 into the empty tile and  give them the CSS class: <code>class="gry"</code>.</p>
+<p><i>But we don't want the 0 show...</i> <br/>
+Let's use a trick: we set the <code>color</code> and the <code>background-color</code> attribute to the same <code>lightgray</code> color, so for us it <i>looks</i> like there is nothing written in it. However, the computer can still read it!</p>
+
+<h3>Algorithm</h3>
+<p>Now we need to think how we want the player to work the puzzle.</p>
+<p>In a real or "physical" game you stick your finger on the puzzle piece you want to move and push it the only way it can go, right?</p>
+<p>In our computer or "virtual" version we need tell the computer how we want to represent <i>"stick your finger on the puzzle piece"</i>, and <i>"push it the only way it can go"</i>.</p>
+
+<h4><i>"stick your finger on the puzzle piece"</i></h4>
+<p>We can make <i>clicking the puzzle piece</i> to be our "virtual" representation  of <i>stick your finger on the puzzle piece</i>. For that we add to the <code>&lt;td&gt;</code> elements a click event. For example:</p>
+<pre>&lt;td id= "1" onclick='move("1")' class="blk"&gt;1&lt;/td&gt;</pre>
+
+<h4><i>"push it the only way it can go"</i></h4>
+<p>This is a bit trickier. You can just see where the empty tile is. But the computer will need a bit of our help.</p>
+<p>We tell the computer all possible ways a puzzle piece in a given tile can move. We do that by defining an array <code>var st= [];</code>, which hold for each of the 16 tiles in the game board the list of tiles the puzzle piece <i>could</i> move, it the final tile would be empty &mdash; we'll check for that later. A puzzle piece in a corner can only go two ways, a piece on a side can go three ways, and any piece inside can go four ways:</p>
+<pre> st[1] = [2,5];      st[2] = [3,6,1];     st[3]  = [4,7,2];       st[4] = [8,3];
+ st[5] = [6,9,1];    st[6] = [7,10,5,2];  st[7]  = [8,11,6,3];    st[8] = [12,7,4];
+ st[9] = [10,13,5]; st[10] = [11,14,9,6]; st[11] = [12,15,10,7]; st[12] = [16,11,8];
+st[13] = [14,9];    st[14] = [15,13,10];  st[15] = [16,14,11];   st[16] = [15,12];</pre>
+
+<h3>move(id)</h3>
+<p>When you click a puzzle piece the function <code>move(id)</code> is called. This function first gets the number that is stored in the tile you have clicked:</p>
+<pre>var cval = document.getElementById(id).innerHTML;</pre>
+
+<p>Then loops through all the tiles that this puzzle piece could move, and checks if the "0" is stored in that tile:</p>
+<pre>for ( var jj=0; jj&lt;st[id].length; jj++ ) {
+ var cc = st[id][jj];
+   var cv = document.getElementById(cc).innerHTML;
+  if ( cv == 0 ) {
+   ...
+  }
+  ...
+}</pre>
+
+<p>If it finds the "0", that means the tile is empty! Then it writes the number of the puzzle piece you clicked into that tile:</p>
+<pre>document.getElementById(cc).innerHTML = cval;
+document.getElementById(cc).setAttribute("class","blk");</pre>
+<p>and marks the tile you clicked as empty:</p>
+<pre>document.getElementById(id).innerHTML = "0";
+document.getElementById(id).setAttribute("class","gry");</pre>
+
+<p>We also keep track of the number of times you clicked a puzzle piece. You can check in how many moves you solved the puzzle! <br/>
+But watch out! It counts as a move even if you click a puzzle piece that cannot move at all.</p>
+
+<h3>firstView()</h3>
+
+<p>When you start the game, you want to puzzle in some random state. In previous games we used the <code>Math.random()</code> function for that. It turns out that when just put the puzzle pieces in a random order on the board, you may end up with a puzzle that cannot be solved. (The Wikipedia page mentions that.)</p>
+
+<p><i>How do we make sure that the puzzle can be solved?</i><br/>
+Well, how would you initialize a "physical" 15 Squares Puzzle?<br/>
+You would start with the solved puzzle from last time and just make a lot of random moves.</p>
+
+<p>... let's do the same!</p>
+
+<p>We know in the solved game the empty tile is at cell number 16 <code>var z = 16;</code>. So we randomly pick one of neighboring tiles to move, i.e., one of the cells in <code>st[z]</code>:</p>
+<pre>var i = Math.floor(Math.random() * st[z].length);
+move(st[z][i]);</pre>
+<p>Now we know that the empty tile is <code>st[z][i]</code>, we make that our new <code>z</code> and start over. We do that 800 times. That should do it!</p>
+
+<h3>Tips how to solve the puzzle?</h3>
+<p><a href= "https://www.instructables.com/id/How-To-Solve-The-15-Puzzle/"> How-To-Solve-The-15-Puzzle</a></p>
+</body></html>
+

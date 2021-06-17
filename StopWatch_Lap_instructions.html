@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Stop Watch/Lap - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Stop Watch With Lap Timer</h1>
+<h2>Instructions</h2>
+
+<p>You have seen all the HTML, CSS and JavaScript elements used in this app already. What is new here is a more complex flow from one function to the next. Such flows are often visualized with a flow diagram like the one shown here for our app.</p>
+
+<p>Compare the flow diagram to how you interact with the app, and also with the code itself. Do you find such a representation of the code useful?</p>
+
+<blockquote>
+<svg width="40em" height="25em" viewBox="0 -5 800 500">
+
+ <symbol id="darr" width="16" height="16" x="-8" y="-16">
+  <polygon points="0,0 16,0 8,16" />
+ </symbol>
+ 
+ <symbol id="rarr" width="16" height="16" x="-16" y="-8">
+  <polygon points="0,0 16,8 0,16" />
+ </symbol>
+
+ <symbol id="code" width="180" height="40" x="-10" y="0">
+  <polygon points="0,40 150,40 170,0 20,0"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+ </symbol>
+
+ <!-- Init -->
+ <use xlink:href="#code" x="330"  y="0"/>
+
+ <!-- Start -->
+ <rect x="300" y="100" width="200" height="40" rx="5" ry="5"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+
+ <!-- Start Timer -->
+ <use xlink:href="#code" x="580"  y="100"/>
+
+ <!-- Stop -->
+ <rect x="100" y="200" width="150" height="40" rx="5" ry="5"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+
+ <!-- Stop Timer -->
+ <use xlink:href="#code" x="275"  y="200"/>
+
+ <!-- Lap -->
+ <rect x="450" y="200" width="150" height="40" rx="5" ry="5"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+ 
+ <!-- Reset -->
+ <rect x= "50" y="300" width="150" height="40" rx="5" ry="5"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+
+ <!-- Resume -->
+ <rect x="250" y="300" width="150" height="40" rx="5" ry="5"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+
+ <!-- Print Lap -->
+ <rect x="610" y="300" width="130" height="40" rx="5" ry="5"
+  transform="skewX(-25)"
+  style="fill:#f0f0f0;stroke:black;stroke-width:3;"/>
+
+ <!-- Clear Display -->
+ <use xlink:href="#code" x="50"  y="400"/>
+
+ <!-- Offset -->
+ <use xlink:href="#code" x="250"  y="400"/>
+ 
+ <g font-size="20" font-family="Verdana" text-anchor="middle">
+  <text x="400" y= "128">Start</text>
+  <text x="175" y= "228">Stop</text>
+  <text x="525" y= "228">Lap</text>
+  <text x="125" y= "328">Reset</text>
+  <text x="325" y= "328">Resume</text>
+ </g>
+ <g font-size="20" font-family="Courier" text-anchor="middle">
+  <text x="400" y=  "27">Init</text>
+  <text x="650" y= "127">Start Timer</text>
+  <text x="345" y= "227">Stop Timer</text>
+  <text x="525" y= "327">Print Lap</text>
+  <text x="123" y= "427">ClearDisplay</text>
+  <text x="320" y= "427">Set Offset</text>
+ </g> 
+ 
+ <use xlink:href="#darr" x="400"  y="100"/>
+ <use xlink:href="#darr" x="175"  y="200"/>
+ <use xlink:href="#darr" x="525"  y="200"/>
+ <use xlink:href="#darr" x="125"  y="300"/>
+ <use xlink:href="#darr" x="325"  y="300"/>
+ <use xlink:href="#darr" x="525"  y="300"/>
+ <use xlink:href="#darr" x="125"  y="400"/>
+ <use xlink:href="#darr" x="325"  y="400"/>
+
+ <use xlink:href="#rarr" x="300"  y="120"/>
+ <use xlink:href="#rarr" x="580"  y="120"/>
+ <use xlink:href="#rarr" x="275"  y="220"/>
+
+ <!-- Init/Start -->
+ <line x1="400" y1= "40" x2="400" y2="100" style="stroke:black;stroke-width:3;" />
+ <!-- Start/Star Timer -->
+ <line x1="500" y1="120" x2="580" y2="120" style="stroke:black;stroke-width:3;" />
+ <!-- Stop/Stop Timer -->
+ <line x1="250" y1="220" x2="275" y2="220" style="stroke:black;stroke-width:3;" />
+ <!-- Stop/Reset -->
+ <line x1="125" y1="240" x2="125" y2="300" style="stroke:black;stroke-width:3;" />
+ <!-- Lap/Print Lap -->
+ <line x1="525" y1="240" x2="525" y2="300" style="stroke:black;stroke-width:3;" />
+ <!-- Reset/Clear Display -->
+ <line x1="125" y1="340" x2="125" y2="400" style="stroke:black;stroke-width:3;" />
+ <!-- Reset/Set Offset -->
+ <line x1="325" y1="340" x2="325" y2="400" style="stroke:black;stroke-width:3;" />
+ 
+ <!-- Start/Stop -->
+ <polyline points="325,140 325,160 175,160 175,200"
+  style="fill:none;stroke:black;stroke-width:3" />
+
+ <!-- Start/Lap -->
+ <polyline points="475,140 475,160 525,160 525,200"
+  style="fill:none;stroke:black;stroke-width:3" />
+
+  <!-- Stop/Resume -->
+ <polyline points="200,240 200,260 325,260 325,300"
+  style="fill:none;stroke:black;stroke-width:3" />
+
+ <!-- Reset/Start -->
+ <polyline points="50,320 30,320 30,120 300,120"
+  style="fill:none;stroke:black;stroke-width:3" />
+
+ <!-- Resume/Start -->
+ <polyline points="400,320 420,320 420,460 30,460 30,320"
+  style="fill:none;stroke:black;stroke-width:3" />
+
+</svg> 
+</blockquote>
+
+<h3>SVG Graphics</h3>
+<p>The flow diagram above is created with another feature of HTML, called "Scalable Vector Graphics" or SVG. We will touch on SVG in the <b>Keep the Beat</b> game, however, you can see already here how it is written by loading this HTML file into your Caret Editor or pressing Ctrl-U in the browser window (or right mouse click: <i>View Page Source</i>).</p>
+<p>For a quick introduction to SVG take a look at:
+<a href= "https://www.w3schools.com/html/html5_svg.asp">W3School: HTML SVG</a>, or for a complete (but hard to read) command reference see: <a href= "https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg">
+Mozilla: SVG</a></p>
+
+</body>
+</html>

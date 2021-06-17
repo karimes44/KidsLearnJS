@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>KnockKnock</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+function KnockKnock( i ) {
+ if ( i == 1 ) {
+   TEXT = "<h1>Boo</h1>"
+   + '<button type="button" onclick="KnockKnock(2)">Boo Who?</button>'
+   document.getElementById("Dialog").innerHTML = TEXT;
+ } else if ( i == 2 ) {
+   TEXT = "<h1>Please don't cry!</h1>";
+   document.getElementById("Dialog").innerHTML = TEXT;
+ }
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+
+<span id='Dialog'>
+ <h1>Knock, knock.</h1>
+ <button type="button" onclick="KnockKnock(1)">Who's There?</button>
+</span>
+
+</body>
+</html>

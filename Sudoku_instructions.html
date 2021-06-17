@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Instr:Sudoku</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  16pt; }
+pre {
+ font-family: "Courier New";
+ font-weight:  bold;
+ font-size:    16pt;
+ margin-left:  20pt; }
+tt {
+ font-family: "Courier New";
+ font-weight:  bold;
+ font-size:    16pt; }
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Sudoku Solver (semi-automatic)</h1>
+<h2>Instructions</h2>
+
+<ol>
+ <li>Find the Sudoku puzzle you want to solve.</li>
+ <li>Click <b>Edit</b> and for all cells with a number in it, replace the "." with that number.</li>
+ <li>Click <b>Bookmark</b>, if you want to save the game to come back in a later browser session. You will see a looong search string in the URL box. Something like:<br/>
+ <tt>sudoku.html?1=.&2=5&3=.&10=.&11=.&12=.&19=3&20=.&21=7...</tt><br/>
+ This is the bookmark you want to save - it gets you back to <i>that</i> Sudoku. You can save the state of the Sudoku this way at any time and you can reload the bookmark any time later.</li>
+ <li>Click <b>Play</b>, if you don't want to bookmark the Sudoku.</li>
+ <li>Click <b>Annotate</b> to do the first round of checking which numbers can be filled in. All newly solved cells are shown in red. Cells that have only two possible numbers are shown with a a ":". You can hover over any cell to see the annotation, i.e., which numbers are still possible for this cell.</li>
+ <li>Keep click <b>Annotate</b> until no more cells can be solved this way. Note that then the <b>Cross Check</b> button appears.</li>
+ <li>Click the <b>Cross Check</b> - this uses a different algorithm to solve more cells. If this algorithm solve another cell, you'll have to repeat the clicking <b>Annotate</b>.</li>
+ <li>If the Sudoku is simple enough this will be all you need to do to solve the puzzle!</li>
+ <li>If the Sudoku is harder, at some point the message: <br/>
+ &nbsp; <i>"Nothing found - could use a little help... Start guessing!"</i> <br/>
+ will appear. So you'll need to start a bit of guessing ...</li>
+ <li>Before you do anything else: Click <b>Store</b>!</li>
+ <li>Pick a cell with ":" in. Hover over it. Write down the two possible numbers, and also remember which cell it is.</li>
+ <li>Click <b>Edit</b> and enter one of the two possible numbers.</li>
+ <li>Click <b>Play</b> - and proceed as before (from Step 5 on).</li>
+ <li>Now one of several things may happen:</li>
+ <ul>
+  <li>You end up at <i>"Nothing found - could use a little help... Start guessing!"</i>. Ok, that guess did not get you anything (sigh). Click <b>Restore</b>, and pick a different cell for guessing. (Do not continue without restoring, as you don't know if your guess was the right one...)</li>
+  <li>You end up with the message like:<br/>
+  <i>"No valid value for cell 54. Need to restore an earlier state..."</i><br/>
+  That means you picked the wrong number. Good news is that now you know the <i>other</i> one is the right one! So click <b>Restore</b> (you did click <b>Store</b>, right?) and put the other number in the cell.</li>
+  <li>You and with the message: <br/>
+  <i>All done!</i></li>
+ </ul>
+ <li>With that you should be able to solve all but the totally insane Sudokus...</li>
+</ol>
+
+</body>
+</html>

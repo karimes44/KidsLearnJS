@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>1x1 - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Multiplication Table Game</h1>
+
+<h2>Instruction</h2>
+
+<p>Need a little help learning your multiplication tables? Let the computer give you a hand... but first you have to give the computer a hand and program the <b>Multiplication Table Game</b>!</p>
+
+<p>This game with ask you randomly a multiplication table question from 1x1 to 12x12. You can then type in the answer. A message window will tell you if you got it right. The computer also keeps score on how many questions you got right.  </p>
+
+<p>For writing this program we will mainly re-use things from the previous games we created.</p>
+
+<h3><code>&lt;body&gt;</code></h3>
+<ol>
+ <li>We use a table with two cells, but just to nicely align the question and the <code>textarea</code> where you can type in the answer.</li>
+ <li>Once you typed in the answer, you click the <b>Submit</b> button, which will call the <code>Answer()</code> function.</li>
+ <li>The score will be displayed in the paragraph with <code>id="Score"</code></li>
+</ol>
+ 
+<h3><code>&lt;script&gt;</code></h3>
+<p>We define three global variables:</p>
+<ol>
+ <li><code>z</code>  will contain the correct answer</li>
+ <li><code>nQ</code> will count the number of questions</li>
+ <li><code>nC</code> will count the number of right answers</li>
+</ol>
+
+<h3><code>PoseQuestion()</code></h3>
+
+<ol>
+ <li>We create two random integer numbers and store them in the variables <code>X</code> and <code>y</code>. Because we need the numbers to be between 1 and 12, and not 0 and 11, we use <code>Math.ceil</code>, which will turn 3.1415 into 4, and not <code>Math.floor</code>, which would turn 3.1415 into 3.</li>
+ <li>We multiply the numbers &mdash; and write the result in the table cell with <code>id="Question"</code>.</li>
+</ol>
+
+<h3><code>Answer()</code></h3>
+
+<ol>
+ <li>We read the value you types into the <code>textarea</code> with: <br/>
+ <code>var Z = document.getElementById("Z").value;</code><br/>
+ (Note how <code>z</code> and <code>Z</code> are different variable! Javascript is "case-sensitive"!)</li>
+ <li>We check if the correct answer (the value of <code>z</code>) is the same number as the one you typed (value of <code>Z</code>).</li>
+ <li>If so, we increase the counter <code>nC</code> by one and alert you through a message pop-up that you got is right!<br/>
+ What is <code>nC++;</code>? That's just short for <code>nC = nC + 1;</code>.</li>
+ <li>If not, we alert you about the mistake and show you the correct answer.</li>
+ <li>We increase the questions counter, again with <code>nQ++;</code>, and call the function <code>ShowScore()</code> that shows the current score.</li>
+ <li>Lastly, we pose the next question.</li>
+</ol>
+
+
+<h3><code>window.onload</code></h3>
+
+<p>In our previous games, you started the game by clicking something. In the multiplication game, however, the game starts as soon as the game (or <code>window</code>) is loaded. With the command:</p>
+
+<pre>window.onload = PoseQuestion;</pre>
+
+<p>... we tell the computer to call the function <code>PoseQuestion</code> as soon as has loaded the game.</p>
+
+<h3>Challenge</h3>
+
+<p>Can you make the Multiplication game ask other math questions?</p>
+
+</body></html>

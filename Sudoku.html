@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+<title>Sudoku</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+.outer {
+ padding:      0px 0px 0px 0px;
+ border-collapse: collapse;
+ border:       1px solid black;
+}
+.inner {
+ padding:      0px 0px 0px 0px;
+ margin:       0px 0px 0px 0px;
+ font-family:  "Courier New";
+ font-size:    36pt;
+ width:        3em;
+ height:       3em;
+ border-collapse: collapse;
+ border:       1px solid black;
+}
+td {
+ font-size:    14pt;
+ width:        1em;
+ border-collapse: collapse;
+ border:       1px solid black;
+ text-align: center;
+}
+input {
+ margin:      0px 0px 0px 0px;
+ text-align:  center;
+ height:      2em;
+}
+.red {
+ color: red; }
+.blk {
+ color: black; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+// Global Variables
+var iter=0;
+var nSolve=0;
+var sudoku=[];
+var Cells = [];
+var echostr = "";
+var unSolved = 0;
+// Initializing Stencils
+//alert("row stencil");
+var Rows = [];
+for ( var r=0; r<9; r++ ) {
+ Rows[r] = [];
+ for ( var cc=0; cc<9; cc++ ) {
+  var ci = r*9 + cc + 1
+  Rows[r][cc] = ci;
+ }
+};
+//alert(Rows[0] + "-" + Rows[1] + "-" + Rows[2]);
+//alert(Rows[3] + "-" + Rows[4] + "-" + Rows[5]);
+//alert(Rows[6] + "-" + Rows[7] + "-" + Rows[8]);
+
+//alert("col stencil");
+var Cols = [];
+for ( var c=0; c<9; c++ ) {
+ Cols[c] = [];
+ for ( var rr=0; rr<9; rr++ ) {
+  var ci = rr*9 + c + 1
+  Cols[c][rr] = ci;
+ }
+};
+//alert(Cols[0] + "-" + Cols[1] + "-" + Cols[2]);
+//alert(Cols[3] + "-" + Cols[4] + "-" + Cols[5]);
+//alert(Cols[6] + "-" + Cols[7] + "-" + Cols[8]);
+
+//alert("sqr stencil");
+var Sqrs =  [];
+for ( var q=0; q<9; q++ ) {
+ Sqrs[q] = [];
+ var ro = 3*(Math.floor(q/3));
+ var co = 3*(q%3);
+ for ( var jj=0; jj<9; jj++ ) {
+  var rr = Math.floor(jj/3);
+  var cc = jj%3;
+  var ci = (ro+rr)*9 + (co+cc) + 1;
+  Sqrs[q][jj] = ci;
+ }
+};
+//alert(Sqrs[0] + "-" + Sqrs[1] + "-" + Sqrs[2]);
+//alert(Sqrs[3] + "-" + Sqrs[4] + "-" + Sqrs[5]);
+//alert(Sqrs[6] + "-" + Sqrs[7] + "-" + Sqrs[8]);
+
+function echo ( str ) {
+ var newstr = str+"</br>"
+ echostr = newstr.concat(echostr)
+ document.getElementById("ECHO").setAttribute("srcdoc","<pre>"+echostr+"</pre>");
+ // alert(echostr);
+ // document.getElementById("ECHO").innerHTML = echostr;
+};
+
+function annotate () {
+ iter++;
+ echo("Annotating");
+ var Reds = document.getElementsByClassName("red")
+ while (Reds.length > 0) {
+  //echo("Blackening cell " + Reds[0].getAttribute("id"));
+  Reds[0].setAttribute("class","blk");
+  Reds = document.getElementsByClassName("red")
+ }
+ nSolve = 0;
+ unSolved = 0;
+ for ( var j=0; j<81; j++ ) {
+  var Vals = "123456789"
+  var r = Math.floor(j/9)
+  var c = j%9
+  var q = Math.floor(r/3)*3+Math.floor(c/3)
+  var cid = j+1
+  var cvals = document.getElementById(cid).innerHTML;
+  //echo(cid + ": " + cvals);
+  if ( cvals == "." || cvals == ":" ) {
+   // stencils
+   for ( var jj=0; jj<9; jj++ ) {
+    var cv = document.getElementById(Rows[r][jj]).innerHTML;
+    if ( cv != "." && cv != ":" ) {
+     var Vals = Vals.replace(cv, "");
+     //echo("ROW: Eliminating for Cell " + cid + " the value " + cv + " found in cell " + ci + ". New Vals are: " + Vals    + " (" + j + "," + r + "," + c + "," + q + ")");
+    }
+    var cv = document.getElementById(Cols[c][jj]).innerHTML;
+    if ( cv != "." && cv != ":" ) {
+     var Vals = Vals.replace(cv, "");
+     //echo("COL: Eliminating for Cell " + cid + " the value " + cv + " found in cell " + ci + ". New Vals are: " + Vals + " (" + j + "," + r + "," + c + "," + q + ")");
+    }
+    var cv = document.getElementById(Sqrs[q][jj]).innerHTML;
+    if ( cv != "." && cv != ":" ) {
+     var Vals = Vals.replace(cv, "");
+     //echo("SQR: Eliminating for Cell " + cid + " the value " + cv + " found in cell " + ci + ". New Vals are: " + Vals + " (" + j + "," + r + "," + c + "," + q + ")");
+    }
+   }
+   //echo(cid + " to be " + Vals);
+  
+   // read out
+   if ( Vals.length == 1 ) {
+    echo("Found " + cid + " to be " + Vals);
+    document.getElementById(cid).innerHTML = Vals;
+    document.getElementById(cid).setAttribute("title",Vals);
+    document.getElementById(cid).setAttribute("class","red");
+    nSolve++
+   } else if ( Vals.length == 2 ) {
+   	unSolved++;
+    document.getElementById(cid).innerHTML = ":";
+    document.getElementById(cid).setAttribute("title",Vals);
+   } else if ( Vals.length == 0 ) {
+    document.getElementById(cid).innerHTML = "x";
+    document.getElementById(cid).setAttribute("title",Vals);
+    document.getElementById(cid).setAttribute("class","red");
+    echo("ERROR: no valid value for cell " + cid);
+    document.getElementById("BUTT").innerHTML = "No valid value for cell " + cid + ". Need to restore an earlier state...";
+   } else {
+   	unSolved++;
+    document.getElementById(cid).setAttribute("title",Vals);
+   }
+  }
+ }
+ document.getElementById("ITER").innerHTML = iter;
+ document.getElementById("SOLV").innerHTML = nSolve;
+ document.getElementById("UNSO").innerHTML = unSolved;
+ if ( nSolve == 0 ) {
+  if ( unSolved == 0 ) {
+  document.getElementById("BUTT").innerHTML = "All done!";
+  } else {
+  document.getElementById("BUTT").innerHTML = "<button type='button' onclick='crosscheck()'>Cross Check</button>";
+ }}
+};
+
+function findVal ( vstr ) {
+ var val = 0
+ echo("vstr: " + vstr );
+ var hits = vstr.match(/1/g);
+ if ( hits && hits.length == 1 ) { val = 1 };
+ hits = vstr.match(/2/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 2 };
+ hits = vstr.match(/3/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 3 };
+ hits = vstr.match(/4/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 4 };
+ hits = vstr.match(/5/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 5 };
+ hits = vstr.match(/6/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 6 };
+ hits = vstr.match(/7/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 7 };
+ hits = vstr.match(/8/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 8 };
+ hits = vstr.match(/9/g);
+ if ( val == 0 && hits && hits.length == 1 ) { val = 9 };
+ echo("Found " + val);
+ return val
+};
+
+function crosscheck () {
+ iter++;
+ echo("Cross Checking");
+ nSolve = 0
+ var vstr = ""
+
+ echo("row stencil");
+ cross(Rows);
+ echo("col stencil");
+ if ( nSolve == 0 ) {
+  cross(Cols);
+ }
+ echo("sqr stencil");
+ if ( nSolve == 0 ) {
+  cross(Sqrs);
+ }
+
+ document.getElementById("ITER").innerHTML = iter;
+ document.getElementById("SOLV").innerHTML = nSolve;
+ document.getElementById("UNSO").innerHTML = unSolved;
+ if ( nSolve == 0 ) {
+  document.getElementById("BUTT").innerHTML = "Nothing found - could use a little help... Start guessing!";
+ } else {
+  document.getElementById("BUTT").innerHTML = "<button type='button' onclick='annotate()'>Annotate</button>";
+ }
+};
+
+function cross ( Clist ) {
+ for ( var k=0; k<9; k++ ) {
+  vstr = ""
+  for ( var jj=0; jj<9; jj++ ) {
+   var ci = Clist[k][jj]
+   var cv = document.getElementById(ci).innerHTML;
+   //echo("ci: " + ci + " cv:  " + cv);
+   if ( cv == "." || cv == ":" ) {
+    var ct = document.getElementById(ci).getAttribute("title");
+    vstr = vstr.concat(ct);
+    //echo("ci: " + ci + " ct:  " + ct + " vstr: " + vstr);
+   }
+  }
+  var val = findVal(vstr);
+  if ( val != 0 ) {
+   for ( var jj=0; jj<9; jj++ ) {
+    var ci = Clist[k][jj]
+    var cv = document.getElementById(ci).innerHTML;
+    var ct = document.getElementById(ci).getAttribute("title");
+    //echo(val + " in " + ct + " ?");
+    if ( cv == "." || cv == ":" ) {
+     if ( ct.indexOf(val) != -1 ) {
+      echo("Found the value " + val + " for cell " + ci);
+      document.getElementById(ci).innerHTML = val;
+      document.getElementById(ci).setAttribute("title",val);
+      document.getElementById(ci).setAttribute("class","red");
+      nSolve++
+      unSolved--
+      return
+     }
+    }
+   }
+  }
+ }
+};
+
+function store () {
+ echo("--- Storing Sudoku locally ---");
+ for ( var ci=1;ci<82;ci++ ) {
+   sudoku[ci] = document.getElementById(ci).innerHTML ;
+  }
+};
+
+function restore () {
+ echo("--- Restoring ---");
+ for ( var ci=1;ci<82;ci++ ) {
+   document.getElementById(ci).innerHTML = sudoku[ci];
+   document.getElementById(ci).setAttribute("class","red");
+   //echo(ci + ": " + sudoku[ci]);
+  }
+  document.getElementById("BUTT").innerHTML = "<button type='button' onclick='annotate()'>Annotate</button>";
+};
+
+function edit () {
+ echo("--- Opening Sudoku for editing ---");
+ for ( var ci=1;ci<82;ci++ ) {
+  var cv = document.getElementById(ci).innerHTML;
+  var inp = '<input type="text" size="1" id= "f' + ci + '" name= "' + ci + '" value="' + cv +'">';
+  document.getElementById(ci).innerHTML = inp;
+  }
+  document.getElementById("EdiStoToggel").innerHTML = "<button type='button' onclick='play()'>Play</button> &nbsp; <input type='submit' size='12' value='Bookmark'> &nbsp;"
+};
+
+function play () {
+ var tmp = [];
+ echo("--- Ending edit mode ---");
+ var Fcells = document.forms.sudoku.elements;
+ for (var prop in Fcells) {
+  if ( prop < 81 ) {
+   var cv = Fcells[prop].value;
+   var ci = Fcells[prop].name;
+   echo("Prop: '" + prop + "' ci: '" + ci + "' cv '" + cv + "'");
+   tmp[ci] = cv;
+  }
+ }
+ for ( var ci=1;ci<82;ci++ ) {
+  document.getElementById(ci).innerHTML = tmp[ci];
+  document.getElementById(ci).setAttribute("class","red");
+  }
+  document.getElementById("EdiStoToggel").innerHTML = "<button type='button' onclick='edit()'>Edit</button> &nbsp;"
+  document.getElementById("BUTT").innerHTML = "<button type='button'  onclick='annotate()'>Annotate</button>";
+};
+
+
+function firstView () {
+ var CellStr = location.search.substring(1);
+ var Cells = CellStr.split("&");
+ echo(Cells.length + "'" + Cells + "'");
+ if ( Cells.length > 1 ) {
+  for ( var ic=0;ic<Cells.length;ic++ ) {
+   //echo(Cells[ic]);
+   var cidVal = Cells[ic].split("=");
+   var cid = cidVal[0];
+   var val = cidVal[1];
+   if ( val == "%3A" ) { val = ":" };
+   sudoku[cid]= val;
+   if ( val == "." || val == ":" ) {
+    document.getElementById(cid).innerHTML = val;
+    document.getElementById(cid).setAttribute("title","123456789");
+   } else {
+    //echo(cid + ": " + val);
+    document.getElementById(cid).innerHTML = val;
+    document.getElementById(cid).setAttribute("title",val);
+   }
+  }
+ }
+};
+window.onload = firstView;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Sudoku Solver (semi-automatic)</h1>
+
+<p>Iteration:        <span id="ITER">0</span> &nbsp; &nbsp;
+Solved in last Step: <span id="SOLV">0</span>&nbsp; &nbsp;
+Still Unsolved:      <span id="UNSO">0</span></p>
+
+<form name="sudoku" action="./sudoku.html">
+<table class="outer"><tr><td class="outer">
+
+<table class="inner"><tr>
+<td id= "1" title="123456789" class="blk">.</td>
+<td id= "2" title="123456789" class="blk">.</td>
+<td id= "3" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="10" title="123456789" class="blk">.</td>
+<td id="11" title="123456789" class="blk">.</td>
+<td id="12" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="19" title="123456789" class="blk">.</td>
+<td id="20" title="123456789" class="blk">.</td>
+<td id="21" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id= "4" title="123456789" class="blk">.</td>
+<td id= "5" title="123456789" class="blk">.</td>
+<td id= "6" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="13" title="123456789" class="blk">.</td>
+<td id="14" title="123456789" class="blk">.</td>
+<td id="15" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="22" title="123456789" class="blk">.</td>
+<td id="23" title="123456789" class="blk">.</td>
+<td id="24" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id= "7" title="123456789" class="blk">.</td>
+<td id= "8" title="123456789" class="blk">.</td>
+<td id= "9" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="16" title="123456789" class="blk">.</td>
+<td id="17" title="123456789" class="blk">.</td>
+<td id="18" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="25" title="123456789" class="blk">.</td>
+<td id="26" title="123456789" class="blk">.</td>
+<td id="27" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td></tr><tr><td class="outer">
+
+<table class="inner"><tr>
+<td id="28" title="123456789" class="blk">.</td>
+<td id="29" title="123456789" class="blk">.</td>
+<td id="30" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="37" title="123456789" class="blk">.</td>
+<td id="38" title="123456789" class="blk">.</td>
+<td id="39" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="46" title="123456789" class="blk">.</td>
+<td id="47" title="123456789" class="blk">.</td>
+<td id="48" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id="31" title="123456789" class="blk">.</td>
+<td id="32" title="123456789" class="blk">.</td>
+<td id="33" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="40" title="123456789" class="blk">.</td>
+<td id="41" title="123456789" class="blk">.</td>
+<td id="42" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="49" title="123456789" class="blk">.</td>
+<td id="50" title="123456789" class="blk">.</td>
+<td id="51" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id="34" title="123456789" class="blk">.</td>
+<td id="35" title="123456789" class="blk">.</td>
+<td id="36" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="43" title="123456789" class="blk">.</td>
+<td id="44" title="123456789" class="blk">.</td>
+<td id="45" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="52" title="123456789" class="blk">.</td>
+<td id="53" title="123456789" class="blk">.</td>
+<td id="54" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td></tr>
+
+<tr><td class="outer">
+
+<table class="inner"><tr>
+<td id="55" title="123456789" class="blk">.</td>
+<td id="56" title="123456789" class="blk">.</td>
+<td id="57" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="64" title="123456789" class="blk">.</td>
+<td id="65" title="123456789" class="blk">.</td>
+<td id="66" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="73" title="123456789" class="blk">.</td>
+<td id="74" title="123456789" class="blk">.</td>
+<td id="75" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id="58" title="123456789" class="blk">.</td>
+<td id="59" title="123456789" class="blk">.</td>
+<td id="60" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="67" title="123456789" class="blk">.</td>
+<td id="68" title="123456789" class="blk">.</td>
+<td id="69" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="76" title="123456789" class="blk">.</td>
+<td id="77" title="123456789" class="blk">.</td>
+<td id="78" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td><td class="outer">
+
+<table class="inner"><tr>
+<td id="61" title="123456789" class="blk">.</td>
+<td id="62" title="123456789" class="blk">.</td>
+<td id="63" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="70" title="123456789" class="blk">.</td>
+<td id="71" title="123456789" class="blk">.</td>
+<td id="72" title="123456789" class="blk">.</td>
+</tr><tr>
+<td id="79" title="123456789" class="blk">.</td>
+<td id="80" title="123456789" class="blk">.</td>
+<td id="81" title="123456789" class="blk">.</td>
+</tr></table>
+
+</td></tr></table>
+<p><span id="EdiStoToggel"><button type='button' onclick='edit()'>Edit</button> &nbsp;</span>
+</p>
+</form>
+
+<p><button type='button' onclick='store()'>Store</button> &nbsp; <button type='button' onclick='restore()'>Restore</button> </p>
+<p><span id="BUTT"><button type='button' onclick='annotate()'>Annotate</button></span></p>
+
+<iframe id="ECHO" srcdoc="echo">
+  <p>Your browser does not support iframes.</p>
+</iframe>
+
+</body>
+</html>

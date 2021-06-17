@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Color Picker</title>
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+.box {
+ height:50px;
+ width: 100px;
+}
+</style>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+
+<h1>Hex Color Picker</h1>
+
+<script>
+function UpdateColor() {
+ //var C = document.forms.GetHEXColor.elements.C.value;
+ var C = document.getElementById("C").value;
+ if ( Is6HEX(C) ) {
+  var DIV = "<div class='box' style='background-color:#" + C + "'></div>"
+  document.getElementById('ColorField').innerHTML = DIV
+ }
+}
+
+function Is6HEX( C ) {
+ var HEX = "0123456789ABCDEF"
+ 
+ if ( C.length != 6 ) {
+   alert("Enter color as 6 digit HEX number!")
+   return false
+ }
+
+ var C_upper = C.toUpperCase();
+ var Clist = C_upper.split("")
+ //alert(Clist);
+ for (var i=0; i<6 ;i++) {
+  //alert(Clist[i] + " : " + HEX.search(Clist[i]) );
+  if ( HEX.search(Clist[i]) == -1 ) {
+   alert("HEX number can contain only '0123456789ABCDEF'");
+   return false;
+  }
+ }
+ return true;
+}
+</script>
+
+<textarea id="C" rows="1" cols="10">123abc</textarea> <br/>
+<button type='button' onclick='UpdateColor()'>Submit</button>
+<br/> <br/>
+<div id='ColorField'>
+<div class="box" style="background-color:#129abc"></div>
+</div>
+
+<hr>
+<!-- _______________________________________________________________ -->
+<h1>Slider Color Picker</h1>
+
+<script>
+function UpdateSliders() {
+ var red   = document.getElementById("red").value;
+ var green = document.getElementById("green").value;
+ var blue  = document.getElementById("blue").value;
+ document.getElementById('ShowRed').innerHTML = red;
+ document.getElementById('ShowGreen').innerHTML = green;
+ document.getElementById('ShowBlue').innerHTML = blue;
+ var DIV = "<div class='box' style='background-color:";
+ DIV += "rgb("+ red + "," + green + "," + blue + "'></div>";
+ document.getElementById('ColorField2').innerHTML = DIV
+}
+</script>
+
+<table>
+<tr><td>Red</td>
+<td><input id='red'   type="range" min="0" max="255" value="128" onchange='UpdateSliders()'></td>
+<td><p><span id="ShowRed">128</span></p></tr>
+<tr><td>Green</td>
+<td><input id='green' type="range" min="0" max="255" value="128" onchange='UpdateSliders()'></td>
+<td><p><span id="ShowGreen">128</span></p></tr>
+<tr><td>Blue</td>
+<td><input id='blue'  type="range" min="0" max="255" value="128" onchange='UpdateSliders()'></td>
+<td><p><span id="ShowBlue">128</span></p></tr>
+</table>
+
+<br/>
+
+<span id='ColorField2'>
+<div class="box" style="background-color:rgb(128,128,128)"></div></span>
+
+</body>
+</html>

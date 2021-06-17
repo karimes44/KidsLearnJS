@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Wack-a-Mole (timed)</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+td {
+ width: 1em;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Nc = 20;
+var Nr = 10;
+var Ne = Nc*Nr;
+
+var GameTime = 20; //in seconds
+var Nw = 0;
+
+function DrawBoard ( ) {
+ var TBL = "<table>";
+ for (var ir=0;ir<Nr;ir++) {
+  TBL += "<tr>";
+  for (var ic=0;ic<Nc;ic++) {
+   nid = ic + Nc*ir;
+   TBL += "<td id='" + nid + "'>~</td>";
+  }
+  TBL += "</tr>";
+ }
+ TBL += "</table>";
+ //alert(TBL);
+ document.getElementById('TBL').innerHTML = TBL;
+}
+
+function Play (iprevious) {
+ if ( iprevious == -1 ) {
+  document.getElementById('BUTTON').innerHTML = "";
+  STOP = setTimeout(GameUp, GameTime*1000)
+ } else {	 
+  document.getElementById(iprevious).innerHTML = "~";
+ }
+ Nw++;
+ var i = Math.floor(Ne*Math.random());
+ document.getElementById(i).innerHTML = "<span onclick='Play("+i+")'>@</span>";
+}
+
+function GameUp () {
+ alert("Time's up! You wacked " + Nw + " moles.");
+ document.getElementById('TBL').innerHTML = "";
+}
+window.onload = DrawBoard;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Wack-a-Mole Game</h1>
+
+<span id='TBL'>(Playing board goes here...)</span>
+<p id='BUTTON'><button type="button" onclick="Play(-1)">Start Game</button></p>
+
+</body>
+</html>

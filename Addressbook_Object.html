@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Address Book</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+.card {
+ font-size:     12pt;
+ text-align:  center;
+ width:         20em;
+ border-style: solid;
+ border-width:   2px;
+ border-radius:  4px;
+ padding-left:   1em;
+ padding-right:  1em;
+ padding-bottom: 1px;
+ margin-left:   12em;
+ margin-bottom:  5px;
+ border-color:  gray;
+ background-color: lightblue;
+}
+textarea, select {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+.group {
+ text-align: left;
+ background-color: darkgray;
+ color: navy;
+ margin-left:  0em;
+}
+.hide * { display: none; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Cards = [
+{ firstname:"Brandy",
+  lastname: "Chastain",
+  street:   "2168 Alder Rd.",
+  city:     "San Jose",
+  bday:     "July 21, 1968",
+  group:    "" },
+{ firstname:"Javier",
+  lastname: "Hernandez",
+  street:   "188 Birch Circle",
+  city:     "Guadalajara",
+  bday:     "June 1, 1988",
+  group:    "" },
+{ firstname:"Gao",
+  lastname: "Leilei",
+  street:   "1580 Chestnut Ave.",
+  city:     "Beijing",
+  bday:     "July 15, 1980",
+  group:    "" },
+{ firstname:"Shoni",
+  lastname: "Schimmel",
+  street:   "492 Dogwood St.",
+  city:     "Pendleton",
+  bday:     "May 4, 1992",
+  group:    "" },
+{ firstname:"Michael",
+  lastname: "Jordan",
+  street:   "1763 Elm Place",
+  city:     "Brooklyn",
+  bday:     "February 17, 1963",
+  group:    "" },
+{ firstname:"Madison",
+  lastname: "Bumgarner",
+  street:   "189 Filbert Court",
+  city:     "Hickory",
+  bday:     "August 1, 1989",
+  group:    "" },
+{ firstname:"Billie Jean",
+  lastname: "King",
+  street:   "2243 Hemlock Rd.",
+  city:     "Long Beach",
+  bday:     "November 22, 1943",
+  group:    "" },
+{ firstname:"Shelly-Ann",
+  lastname: "Fraser-Pryce",
+  street:   "2786 Juniper St.",
+  city:     "Klingston",
+  bday:     "December 27, 1986",
+  group:    "" }
+];
+
+var crit = "none";
+var MonthByName = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+'July', 'August', 'September', 'October', 'November', 'December']
+
+
+function SortCards () {
+ crit = document.getElementById("SORT").value
+ //alert(crit);
+if ( crit != "none" ) {
+ if ( crit == "firstname" || crit == "lastname" ) {
+  Cards.sort(function (A, B) {
+   var txtA= A[crit].toUpperCase();
+   var txtB= B[crit].toUpperCase();
+   //alert(txtA + " > " + txtB);
+   if (txtA < txtB) return -1
+   if (txtA > txtB) return  1
+   return 0
+  })
+ };
+ 
+ if ( crit == "bday" ) {
+  Cards.sort(function (A, B) {
+   var bdayA= A.bday;
+   var bdayB= B.bday;
+   var bdayA_ms = Date.parse(bdayA);
+   var bdayB_ms = Date.parse(bdayB);
+   //alert(bdayA_ms+ " > " + bdayA_ms);
+   if (bdayA_ms < bdayB_ms) return -1
+   if (bdayA_ms > bdayB_ms) return  1
+   return 0
+  })
+ };
+
+ if ( crit == "month" ) {
+  Cards.sort(function (A, B) {
+   var bdayA= A.bday;
+   var bdayB= B.bday;
+   var bdayA_ms = Date.parse(bdayA)
+   var bdayB_ms = Date.parse(bdayB)
+   var DateA = new Date(bdayA_ms);
+   var DateB = new Date(bdayB_ms);
+   //alert(DateA.getMonth() + " > " + DateB.getMonth());
+   if (DateA.getMonth() < DateB.getMonth()) return -1
+   if (DateA.getMonth() > DateB.getMonth()) return  1
+   if (DateA.getDate()  > DateB.getDate())  return  1
+   if (DateA.getDate()  < DateB.getDate())  return -1
+   return 0
+  })
+ };
+}
+ var AddBook = ""
+ //alert(Cards.length);
+ for ( var i=0;i<Cards.length;i++ ) {
+  // card = Cards[i];
+  // Cards[i].classList.remove("hide");
+  var Group = ""
+  if ( crit == "firstname" || crit == "lastname") {
+   var name = Cards[i][crit];
+   Group = name.charAt(0);
+   //alert(i + ") " + Group + ":" + name);
+  };
+  
+  if ( crit == "bday" ) {
+   var Group = Cards[i].bday;
+   //alert(i + ") " + Group);
+  };
+  
+  if ( crit == "month" ) {
+   var bday= Cards[i].bday;
+   var bday_ms = Date.parse(bday)
+   var DATE = new Date(bday_ms);
+   var Group = MonthByName[DATE.getMonth()];
+   //alert(i + ") " + DATE.getMonth() + " = " + Group);
+  };
+  
+  AddBook += '<div class="card"><p class="group">' + (i+1) + ") " + Group + '</p>';
+  AddBook += '<h2>' + Cards[i].firstname + ' ' + Cards[i].lastname + '</h2>';
+  AddBook += '<p>'  + Cards[i].street + '</p>';
+  AddBook += '<p>'  + Cards[i].city + '</p>';
+  AddBook += '<p>'  + Cards[i].bday + '</p></div>';
+ }
+ //alert(AddBook);
+ document.getElementById("ShowCards").innerHTML = AddBook;
+}
+
+function SearchCards () {
+ crit = document.getElementById("SEARCH").value;
+ if ( crit == "none" ) return
+
+ SearchString = document.getElementById("SearchString").value;
+ Hits = [];
+ for ( var i=0;i<Cards.length;i++ ) {
+  if ( crit == "firstname" || crit == "lastname") {
+   var name = Cards[i][crit];
+   if ( name.search(SearchString) != -1 ) {
+    Hits.push(Cards[i]);
+   } 
+  }
+  if ( crit == "bday") {
+   var bday= Cards[i].bday;
+   //alert(bday + " : " + SearchString);
+   if ( bday.search(SearchString) != -1 ) {
+    Hits.push(Cards[i]);
+   } 
+  }
+ }
+ 
+ var AddBook = ""
+ for ( var i=0;i<Hits.length;i++ ) {
+  AddBook += '<div class="card"><p class="group">' + (i+1) + ')</p>';
+  AddBook += '<h2>' + Hits[i].firstname + ' ' + Hits[i].lastname + '</h2>';
+  AddBook += '<p>'  + Hits[i].street + '</p>';
+  AddBook += '<p>'  + Hits[i].city + '</p>';
+  AddBook += '<p>'  + Hits[i].bday + '</p></div>';
+ }
+ //alert(AddBook);
+ if ( AddBook == "" ) {
+  document.getElementById("ShowCards").innerHTML = "<p>Nothing found...</p>";
+ } else {
+  document.getElementById("ShowCards").innerHTML = AddBook;
+ }
+}
+
+window.onload = SortCards;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Address Book</h1>
+
+<table>
+<tr><th>Sort by:</th>
+<td><select id='SORT' onchange='SortCards()'>
+ <option value='none'>No Sort</option>
+ <option value='firstname'>First Name</option>
+ <option value='lastname'>Last Name</option>
+ <option value='bday'>Birthday</option>
+ <option value='month'>Birth Month</option>
+</select></td>
+<th>Search by:</th>
+<td><select id='SEARCH' onchange='SearchCards()'>
+ <option value='none'>No Search</option>
+ <option value='firstname'>First Name</option>
+ <option value='lastname'>Last Name</option>
+ <option value='bday'>Birthday</option>
+</select></td>
+<th>Search String:</th>
+<td><textarea id="SearchString" rows="1" cols="20"></textarea></td>
+</tr></table>
+
+<span id="ShowCards">
+
+</span>
+
+</body>
+</html>

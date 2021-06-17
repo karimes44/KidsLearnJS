@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Pig Latin - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Pig Latin Encoder</h1>
+<h2>Instructions</h2>
+
+<p>Ancay ouyay eadray Igpay Atinlay? Ifay otnay eckchay outay atwhay <a href= "https://en.wikipedia.org/wiki/Pig_Latin">Ikipediaway</a> ashay otay aysay outabay Igpay Atinlay.</p>
+
+<h3>Pig Latin Rules</h3>
+<a name="PLR"></a>
+<p>The rules for converting a word into Pig Latin are:</p>
+<div class="def">
+<ul>
+ <li><b>Case 1</b>: First letter is consonant</li>
+ <ol type="a">
+  <li>Find first vowel</li>
+  <li>Move all letters before the first vowel to the end of the words</li>
+  <li>Add <i>ay</i> to the end</li>
+ </ol>
+ <li><b>Case 2</b>: The word begins with one or more vowels</li>
+ <ol type="a">
+  <li>Move the leading vowel to the end</li>
+  <li>Treat the resulting word as in Case 1</li>
+ </ol>
+ <li><b>Case 3</b>: The word consists of a single character (or all vowels)</li>
+ <ol type="a">
+  <li>Add <i>way</i> to the end</li>
+ </ol>
+ <li>Non-word letter characters should not be encoded.</li>
+</ul>
+</div>
+
+<h3>&lt;body&gt;</h3>
+<p>Again, we have text input fields, like in the <b>Shift Encoder</b> game, but only two, because we don't have a decoder.</p>
+
+<h3>FindWord()</h3>
+
+<p>This time the encoding is a bit more complicated. First we have to separate the words. You could have punctuation signs (such as <code>.,;:!?"'</code>), numbers, smiley faces ... you name it. We don't what our encoder to get confused by that.</p>
+
+<h4>What exactly is a "word"?</h4>
+
+<p>You know how it is, you have to spell out <i>everything</i> for these computers!</i> For the purpose of our Pig Latin Encoder we define a <b>word</b> as follows:</p>
+<div class="def"><ul>
+ <li>A word is string of letters only, where "letters" are one of the following: <code>"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</code></li>
+ <li>A word starts when a non-letter character is followed by a letter character.</li>
+</ul></div>
+
+<p>Here is a how we teach the computer to find words: We use a technique called <b>flags</b> to keep track of what we are currently doing. We can be doing one of two things:</p>
+
+<div class="def"><ul>
+ <li>We are either adding letters to a word: <code>WordFlag = true</code></li>
+ <li>... or not: <code>WordFlag = false</code></li>
+</ul></div>
+
+<p>We start with <code>WordFlag = false</code>, because we don't know yet what the first character might be. Also, we set our word aggregation variable to an empty string <code>var Word = "";</code>, same with the Pig Latin output string <code>var PigLatin = "";</code>. Then we step through the <code>Text</code> one character at a time:</p>
+
+<div class="def"><ul>
+ <li>Is the next character a letter?</li>
+ <ul>
+  <li><b>YES</b>: Are we currently aggregating a word? (<code>WordFlag = true</code>)</li>
+  <ul>
+   <li><b>YES</b>: Hey, we just found another character for that word, so add it with: <code>Word += Char</code></li>
+   <li><b>NO</b>: Well, then we better start a new word with: <code>Word = Char</code> and set <code>WordFlag = false</code>.</li>
+  </ul>
+  <li><b>NO</b>: Are we currently aggregating a word? (<code>WordFlag = true</code>)</li>
+  <ul>
+   <li><b>YES</b>: Well, that must be the end of the word! Send the word to the Pig Latin converter, set <code>WordFlag = false</code> and add the converted word that we got back from the converter to the Pig Latin output string.</li>
+   <li><b>NO</b>: That must be some other character we are not concerned about, just copy it to the Pig Latin output string.</li>
+  </ul>
+ </ul></div>
+
+<h3>EncodeWord()</h3>
+<p>Now we have isolated the words, but we still have to convert them. First let's check if the word is made up of vowels only, i.e., does not contain <i>any</i> consonants. For that we define another flag:</p>
+
+<div class="def"><ul>
+ <li>Does the word contain any consonants? If yes, then: <code>AllVowels = false</code></li>
+ <li>... if not: <code> AllVowels = true</code></li>
+</ul></div>
+
+<p>Now we can implement <b>Case 3</b> of the <a href= "#PLR">Pig Latin Rules</a>: If the length of the word is 1 OR (JS symbol "<code>||</code>" &mdash; see <a name="1">[1]</a>) the word is all vowels, then we just add "<i>way</i>" to the end:</p>
+<pre>if ( Word.length == 1 || AllVowels) {
+ Pig = Word + "way";
+}</pre>
+
+<p>If this is not the case, i.e., either the word has more than one character, or it is not all vowels, the we move all vowels we find at the beginning to the end (<b>Case 2</b> of the <a href= "#PLR">Pig Latin Rules</a>). But we have to watch out for capitalization! If the first character is upper case, we have to make it lower case, before moving it to the end. And the we have to make the then first letter capital.</p>
+
+<p>After that we can move to <b>Case 1</b> of the <a href= "#PLR">Pig Latin Rules</a>.</p>
+
+<h3>New String Methods used here</h3>
+
+<p>Go to <a href= "https://www.w3schools.com/js/js_string_methods.asp"> W3School: JavaScript String Methods</a> and look for them, or the the dircetly links:</p>
+<ol>
+ <li><a href= "https://www.w3schools.com/jsref/jsref_includes.asp"> <code>includes()</code></a></li>
+ <li><a href= "https://www.w3schools.com/jsref/jsref_charat.asp"> <code>charAt()</code></a></li>
+ <li><a href= "https://www.w3schools.com/jsref/jsref_touppercase.asp"> <code>toUpperCase()</code></a></li>
+ <li><a href= "https://www.w3schools.com/jsref/jsref_tolowercase.asp"> <code>toLowerCase()</code></a></li>
+ <li><a href= "https://www.w3schools.com/jsref/jsref_slice_string.asp"> <code>slice()</code></a></li>
+</ol>
+<hr>
+
+<h4>References</h4>
+<blockquote>
+<a name="1">[1]</a> <a href= "https://www.w3schools.com/js/js_comparisons.asp"> W3School: JS Comparisons</a>, then look for <b>Logical Operators</b>.<br/>
+</blockquote>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Canvas/Lissajous</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ width:        600px;
+ font-family: "Helvetica";
+ margin-left:  14pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var ic = 0;
+function Draw() {
+ //Lissajous Figures
+ var A = Number(document.getElementById("A").value);
+ var B = Number(document.getElementById("B").value);
+ var d = Number(document.getElementById("d").value);
+ var L = Number(document.getElementById("L").value);
+  
+ var c = document.getElementById("Canvas");
+ var ctx = c.getContext("2d");
+ ctx.strokeStyle = "hsl(" + 32*ic%256 +", 100%, 64%)"
+ var x = 300+ 298*Math.cos(d*2*Math.PI/360)
+ var y = 300
+ ctx.beginPath()
+ ctx.moveTo(x,y);
+ var iMax = (L*360+1)
+ for ( var i =0; i < iMax ; i=i+2 ) {
+  //alert(A*i+d);
+  x = 300+ 298*Math.cos((A*i+d)*2*Math.PI/360)
+  y = 300+ 298*Math.sin( B*i   *2*Math.PI/360)
+  ctx.lineTo(x,y);
+  ctx.stroke();
+ }
+ ic++;
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Canvas Draw/Lissajous Figures</h1>
+
+<table><tr>
+<th>A:</th>      <td><textarea id="A" rows="1" cols="4">1</textarea></td>
+<th>B:</th>      <td><textarea id="B" rows="1" cols="4">1</textarea></td>
+<th>&delta;:</th><td><textarea id="d" rows="1" cols="4">0</textarea></td>
+<th>Loops:</th>  <td><textarea id="L" rows="1" cols="4">1</textarea></td>
+
+<td><button type="button" onclick="Draw()">Submit</button></td>
+</tr>
+</table>
+
+<canvas id="Canvas" width="600" height="600" style="border:3px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+</body>
+</html>

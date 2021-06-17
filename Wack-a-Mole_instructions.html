@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Wack-a-Mole - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Wack-a-Mole</h1>
+<h2>Instructions</h2>
+
+<h3>Overview</h3>
+<p>Add a Mole to the game by clicking the button, then, as fast as you can, wack, that is click, the mole. But guess what, another one will just pop up somewhere else...</p>
+
+<h3><code>DrawBoard()</code></h3>
+
+<p>Just as for Tic-Tac-Toe we need a game board. But we need a BIG one this time, maybe with <code>var Nc = 20</code> columns and <code>var Nr = 10</code> rows, for a total of <code>var Ne = Nc*Nr</code> 200 cells.</p>
+
+<p>To write an HTML table with so many cells, that would be annoying... Why don't we ask the computer to help us out?</p>
+
+<p>We can do that by using JS loops to build up a looong string called <code>TBL</code>, that contains the HTML definition of our table with 200 cells:</p>
+
+<pre>
+ var TBL = "&lt;table&gt;";
+ for (var ir=0;ir&lt;Nr;ir++) {
+  TBL += "&lt;tr&gt;";
+  for (var ic=0;ic&lt;Nc;ic++) {
+   nid = ic + Nc*ir;
+   TBL += "&lt;td id='" + nid + "'&gt;~&lt;/td&gt;";
+  }
+  TBL += "&lt;/tr&gt;";
+ }
+ TBL += "&lt;/table&gt;";
+</pre>
+
+<p>We placed the "<code>~</code>" sign in each that, where the mole at the monent is not...</p>
+
+<p>To learn how <code>for</code> loops work, check out: <br/>
+<a href= "https://www.w3schools.com/js/js_loop_for.asp">W3School: JS Loops For</a>.</p>
+
+<p>These few command create in the variable <code>TBL</code> for our HTML table:</p>
+
+<pre class="small">
+&lt;table&gt;&lt;tr&gt;
+&lt;td id='0'&gt;~&lt;/td&gt;&lt;td id='1'&gt;~&lt;/td&gt;&lt;td id='2'&gt;~&lt;/td&gt;&lt;td id='3'&gt;~&lt;/td&gt;
+&lt;td id='4'&gt;~&lt;/td&gt;&lt;td id='5'&gt;~&lt;/td&gt;&lt;td id='6'&gt;~&lt;/td&gt;&lt;td id='7'&gt;~&lt;/td&gt;
+&lt;td id='8'&gt;~&lt;/td&gt;&lt;td id='9'&gt;~&lt;/td&gt;&lt;td id='10'&gt;~&lt;/td&gt;&lt;td id='11'&gt;~&lt;/td&gt;
+&lt;td id='12'&gt;~&lt;/td&gt;&lt;td id='13'&gt;~&lt;/td&gt;&lt;td id='14'&gt;~&lt;/td&gt;&lt;td id='15'&gt;~&lt;/td&gt;
+&lt;td id='16'&gt;~&lt;/td&gt;&lt;td id='17'&gt;~&lt;/td&gt;&lt;td id='18'&gt;~&lt;/td&gt;&lt;td id='19'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='20'&gt;~&lt;/td&gt;&lt;td id='21'&gt;~&lt;/td&gt;&lt;td id='22'&gt;~&lt;/td&gt;&lt;td id='23'&gt;~&lt;/td&gt;
+&lt;td id='24'&gt;~&lt;/td&gt;&lt;td id='25'&gt;~&lt;/td&gt;&lt;td id='26'&gt;~&lt;/td&gt;&lt;td id='27'&gt;~&lt;/td&gt;
+&lt;td id='28'&gt;~&lt;/td&gt;&lt;td id='29'&gt;~&lt;/td&gt;&lt;td id='30'&gt;~&lt;/td&gt;&lt;td id='31'&gt;~&lt;/td&gt;
+&lt;td id='32'&gt;~&lt;/td&gt;&lt;td id='33'&gt;~&lt;/td&gt;&lt;td id='34'&gt;~&lt;/td&gt;&lt;td id='35'&gt;~&lt;/td&gt;
+&lt;td id='36'&gt;~&lt;/td&gt;&lt;td id='37'&gt;~&lt;/td&gt;&lt;td id='38'&gt;~&lt;/td&gt;&lt;td id='39'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='40'&gt;~&lt;/td&gt;&lt;td id='41'&gt;~&lt;/td&gt;&lt;td id='42'&gt;~&lt;/td&gt;&lt;td id='43'&gt;~&lt;/td&gt;
+&lt;td id='44'&gt;~&lt;/td&gt;&lt;td id='45'&gt;~&lt;/td&gt;&lt;td id='46'&gt;~&lt;/td&gt;&lt;td id='47'&gt;~&lt;/td&gt;
+&lt;td id='48'&gt;~&lt;/td&gt;&lt;td id='49'&gt;~&lt;/td&gt;&lt;td id='50'&gt;~&lt;/td&gt;&lt;td id='51'&gt;~&lt;/td&gt;
+&lt;td id='52'&gt;~&lt;/td&gt;&lt;td id='53'&gt;~&lt;/td&gt;&lt;td id='54'&gt;~&lt;/td&gt;&lt;td id='55'&gt;~&lt;/td&gt;
+&lt;td id='56'&gt;~&lt;/td&gt;&lt;td id='57'&gt;~&lt;/td&gt;&lt;td id='58'&gt;~&lt;/td&gt;&lt;td id='59'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='60'&gt;~&lt;/td&gt;&lt;td id='61'&gt;~&lt;/td&gt;&lt;td id='62'&gt;~&lt;/td&gt;&lt;td id='63'&gt;~&lt;/td&gt;
+&lt;td id='64'&gt;~&lt;/td&gt;&lt;td id='65'&gt;~&lt;/td&gt;&lt;td id='66'&gt;~&lt;/td&gt;&lt;td id='67'&gt;~&lt;/td&gt;
+&lt;td id='68'&gt;~&lt;/td&gt;&lt;td id='69'&gt;~&lt;/td&gt;&lt;td id='70'&gt;~&lt;/td&gt;&lt;td id='71'&gt;~&lt;/td&gt;
+&lt;td id='72'&gt;~&lt;/td&gt;&lt;td id='73'&gt;~&lt;/td&gt;&lt;td id='74'&gt;~&lt;/td&gt;&lt;td id='75'&gt;~&lt;/td&gt;
+&lt;td id='76'&gt;~&lt;/td&gt;&lt;td id='77'&gt;~&lt;/td&gt;&lt;td id='78'&gt;~&lt;/td&gt;&lt;td id='79'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='80'&gt;~&lt;/td&gt;&lt;td id='81'&gt;~&lt;/td&gt;&lt;td id='82'&gt;~&lt;/td&gt;&lt;td id='83'&gt;~&lt;/td&gt;
+&lt;td id='84'&gt;~&lt;/td&gt;&lt;td id='85'&gt;~&lt;/td&gt;&lt;td id='86'&gt;~&lt;/td&gt;&lt;td id='87'&gt;~&lt;/td&gt;
+&lt;td id='88'&gt;~&lt;/td&gt;&lt;td id='89'&gt;~&lt;/td&gt;&lt;td id='90'&gt;~&lt;/td&gt;&lt;td id='91'&gt;~&lt;/td&gt;
+&lt;td id='92'&gt;~&lt;/td&gt;&lt;td id='93'&gt;~&lt;/td&gt;&lt;td id='94'&gt;~&lt;/td&gt;&lt;td id='95'&gt;~&lt;/td&gt;
+&lt;td id='96'&gt;~&lt;/td&gt;&lt;td id='97'&gt;~&lt;/td&gt;&lt;td id='98'&gt;~&lt;/td&gt;&lt;td id='99'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='100'&gt;~&lt;/td&gt;&lt;td id='101'&gt;~&lt;/td&gt;&lt;td id='102'&gt;~&lt;/td&gt;&lt;td id='103'&gt;~&lt;/td&gt;
+&lt;td id='104'&gt;~&lt;/td&gt;&lt;td id='105'&gt;~&lt;/td&gt;&lt;td id='106'&gt;~&lt;/td&gt;&lt;td id='107'&gt;~&lt;/td&gt;
+&lt;td id='108'&gt;~&lt;/td&gt;&lt;td id='109'&gt;~&lt;/td&gt;&lt;td id='110'&gt;~&lt;/td&gt;&lt;td id='111'&gt;~&lt;/td&gt;
+&lt;td id='112'&gt;~&lt;/td&gt;&lt;td id='113'&gt;~&lt;/td&gt;&lt;td id='114'&gt;~&lt;/td&gt;&lt;td id='115'&gt;~&lt;/td&gt;
+&lt;td id='116'&gt;~&lt;/td&gt;&lt;td id='117'&gt;~&lt;/td&gt;&lt;td id='118'&gt;~&lt;/td&gt;&lt;td id='119'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='120'&gt;~&lt;/td&gt;&lt;td id='121'&gt;~&lt;/td&gt;&lt;td id='122'&gt;~&lt;/td&gt;&lt;td id='123'&gt;~&lt;/td&gt;
+&lt;td id='124'&gt;~&lt;/td&gt;&lt;td id='125'&gt;~&lt;/td&gt;&lt;td id='126'&gt;~&lt;/td&gt;&lt;td id='127'&gt;~&lt;/td&gt;
+&lt;td id='128'&gt;~&lt;/td&gt;&lt;td id='129'&gt;~&lt;/td&gt;&lt;td id='130'&gt;~&lt;/td&gt;&lt;td id='131'&gt;~&lt;/td&gt;
+&lt;td id='132'&gt;~&lt;/td&gt;&lt;td id='133'&gt;~&lt;/td&gt;&lt;td id='134'&gt;~&lt;/td&gt;&lt;td id='135'&gt;~&lt;/td&gt;
+&lt;td id='136'&gt;~&lt;/td&gt;&lt;td id='137'&gt;~&lt;/td&gt;&lt;td id='138'&gt;~&lt;/td&gt;&lt;td id='139'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='140'&gt;~&lt;/td&gt;&lt;td id='141'&gt;~&lt;/td&gt;&lt;td id='142'&gt;~&lt;/td&gt;&lt;td id='143'&gt;~&lt;/td&gt;
+&lt;td id='144'&gt;~&lt;/td&gt;&lt;td id='145'&gt;~&lt;/td&gt;&lt;td id='146'&gt;~&lt;/td&gt;&lt;td id='147'&gt;~&lt;/td&gt;
+&lt;td id='148'&gt;~&lt;/td&gt;&lt;td id='149'&gt;~&lt;/td&gt;&lt;td id='150'&gt;~&lt;/td&gt;&lt;td id='151'&gt;~&lt;/td&gt;
+&lt;td id='152'&gt;~&lt;/td&gt;&lt;td id='153'&gt;~&lt;/td&gt;&lt;td id='154'&gt;~&lt;/td&gt;&lt;td id='155'&gt;~&lt;/td&gt;
+&lt;td id='156'&gt;~&lt;/td&gt;&lt;td id='157'&gt;~&lt;/td&gt;&lt;td id='158'&gt;~&lt;/td&gt;&lt;td id='159'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='160'&gt;~&lt;/td&gt;&lt;td id='161'&gt;~&lt;/td&gt;&lt;td id='162'&gt;~&lt;/td&gt;&lt;td id='163'&gt;~&lt;/td&gt;
+&lt;td id='164'&gt;~&lt;/td&gt;&lt;td id='165'&gt;~&lt;/td&gt;&lt;td id='166'&gt;~&lt;/td&gt;&lt;td id='167'&gt;~&lt;/td&gt;
+&lt;td id='168'&gt;~&lt;/td&gt;&lt;td id='169'&gt;~&lt;/td&gt;&lt;td id='170'&gt;~&lt;/td&gt;&lt;td id='171'&gt;~&lt;/td&gt;
+&lt;td id='172'&gt;~&lt;/td&gt;&lt;td id='173'&gt;~&lt;/td&gt;&lt;td id='174'&gt;~&lt;/td&gt;&lt;td id='175'&gt;~&lt;/td&gt;
+&lt;td id='176'&gt;~&lt;/td&gt;&lt;td id='177'&gt;~&lt;/td&gt;&lt;td id='178'&gt;~&lt;/td&gt;&lt;td id='179'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td id='180'&gt;~&lt;/td&gt;&lt;td id='181'&gt;~&lt;/td&gt;&lt;td id='182'&gt;~&lt;/td&gt;&lt;td id='183'&gt;~&lt;/td&gt;
+&lt;td id='184'&gt;~&lt;/td&gt;&lt;td id='185'&gt;~&lt;/td&gt;&lt;td id='186'&gt;~&lt;/td&gt;&lt;td id='187'&gt;~&lt;/td&gt;
+&lt;td id='188'&gt;~&lt;/td&gt;&lt;td id='189'&gt;~&lt;/td&gt;&lt;td id='190'&gt;~&lt;/td&gt;&lt;td id='191'&gt;~&lt;/td&gt;
+&lt;td id='192'&gt;~&lt;/td&gt;&lt;td id='193'&gt;~&lt;/td&gt;&lt;td id='194'&gt;~&lt;/td&gt;&lt;td id='195'&gt;~&lt;/td&gt;
+&lt;td id='196'&gt;~&lt;/td&gt;&lt;td id='197'&gt;~&lt;/td&gt;&lt;td id='198'&gt;~&lt;/td&gt;&lt;td id='199'&gt;~&lt;/td&gt;
+&lt;/tr&gt;&lt;/table&gt;
+</pre>
+
+<p>Would you have wanted to type all that in? Not me!</p>
+
+<h3><code>Play()</code></h3>
+
+<p>The function that lets you play the game, is quite simple and contains only things we saw already in earlier games:</p>
+
+<p>We randomly pick a cell and write into it the mole, which is the "<code>@</code>" sign, as well as an <code>onclick</code> event that calls the <code>Play(i)</code>, when you click on the mole.</p>
+
+<p>We also have to clean-up after ourselves: We write into the cell where the mole was when we clicked it, the "<code>~</code>" to show that the mole is no longer there.</p>
+
+<p>But at the beginning there is no mole? Right, that's why the <b>Add Mole</b> button calls <code>Play(-1)</code>, that is with the cell index <code>-1</code> that does not exists. So we have to check for that in the <code>Play</code> function...</p>
+
+<h3>How do we know that we are winning?</h3>
+
+<p>Good question! In this version of the game we don't. So let's fix that...</p>
+</body>
+</html>

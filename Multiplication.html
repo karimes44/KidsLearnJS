@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>1x1</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family: "Courier New";
+ font-size:    14pt;
+ font-weight: bold;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var  z =  0; //Correct Answer stored here
+var nQ =  0; //Number of Questions
+var nC =  0; //Number of Correct Answers
+
+function PoseQuestion() {
+ var x = Math.ceil(12*Math.random());
+ var y = Math.ceil(12*Math.random());
+ z = x*y;
+ var Q = "<p><b>" + x + " * " + y + "</b> =";
+ document.getElementById('Question').innerHTML = Q;
+};
+
+function Answer() {
+ var Z = document.getElementById("Z").value;
+ if ( z == Z ) {
+  nC++;
+  alert("Correct ;-) ");
+ } else {
+  alert("OOPS - the correct answer is: " + z + " ... try again :( ");
+ };
+ nQ++;
+ ShowScore();
+ PoseQuestion();
+ document.getElementById('Z').value = "";
+};
+
+function ShowScore() {
+ var S = "<p>You answered " + nC + " of " + nQ + " questions correctly!";
+ document.getElementById('Score').innerHTML = S;
+};
+
+window.onload = PoseQuestion;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+
+<h1>Multiplication Table Game</h1>
+
+<table>
+<tr><td id='Question'>(question goes here...)</td>
+<td><textarea id="Z" rows="1" cols="4"></textarea></td></tr>
+</table>
+
+<p><button type="button" onclick="Answer()">Submit</button></p>
+<p id='Score'>(score goes here...)</p>
+
+</body>
+</html>

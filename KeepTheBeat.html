@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Keep Beat</title>
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  14pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+button {
+ width:        8em;
+ font-size:    40pt;
+ margin-left:  5em; }
+</style>
+<!-- _______________________________________________________________ -->
+<script>
+var Beats = [];
+var Beats2F = [];
+var AveBeat = 0.0;
+var SigBeat = 0.0;
+var Ap1S = 0.0;
+var Ap2S = 0.0;
+var Ap3S = 0.0;
+var Am1S = 0.0;
+var Am2S = 0.0;
+var Am3S = 0.0;
+
+var lastTime = -1;
+
+function GetBeat( ) {
+ if ( lastTime == -1 ) {
+  var lastDate = new Date();
+  lastTime= lastDate.getTime()
+ } else {
+  var nowDate = new Date();
+  var nowTime = nowDate.getTime()
+  Tinterval = nowTime - lastTime;
+  Beat = 60*1000.0/Tinterval;
+  Beats.push(Beat)
+  Beats2F.push(Beat.toFixed(2));
+  document.getElementById("ShowBeat").innerHTML = Beat.toFixed(2);
+  lastTime = nowTime;
+  GetStats() 
+ }
+}
+
+function GetStats() {
+  var Bstr = Beats2F.toString().replace(/,/g, " ");
+  document.getElementById("ShowData").innerHTML = Bstr;
+  AveBeat = 0; SigBeat =0;
+  for ( var i=0;i<Beats.length;i++) {
+   AveBeat += 1.0*Beats[i];
+   SigBeat += 1.0*Beats[i]*Beats[i];
+  }
+  //alert(AveBeat + "-" + Beats.length);
+  AveBeat = AveBeat/Beats.length;
+  SigBeat = Math.sqrt(SigBeat/Beats.length - AveBeat*AveBeat);
+  Percent = 100*SigBeat/AveBeat;
+  
+  Ap1S = AveBeat + SigBeat;
+  Ap2S = AveBeat + 2*SigBeat;
+  Ap3S = AveBeat + 3*SigBeat;
+  Am1S = AveBeat - SigBeat;
+  Am2S = AveBeat - 2*SigBeat;
+  Am3S = AveBeat - 3*SigBeat;
+  
+  var BeatsSort = Beats.slice(); // Deep Copy!!!
+  BeatsSort.sort(function(a, b){return b - a});
+  //alert(Beats);
+  MinBeat = BeatsSort[0];
+  MaxBeat = BeatsSort[Beats.length-1];
+  document.getElementById("ShowAve").innerHTML = AveBeat.toFixed(2);
+  document.getElementById("ShowMin").innerHTML = MinBeat.toFixed(2);
+  document.getElementById("ShowMax").innerHTML = MaxBeat.toFixed(2);
+  document.getElementById("ShowSig").innerHTML = SigBeat.toFixed(2);
+  document.getElementById("ShowPer").innerHTML = Percent.toFixed(2);
+  ShowGraph();
+}
+
+function ShowGraph() {
+ var SVG = '<svg width="55em" height="25em" viewBox="-10 -10 240 120">';
+ SVG += '<line x1="-2" y1= "-2" x2= "-2" y2="102" stroke="black" troke-width="1"  stroke-linecap="round"/>';
+ SVG += '<line x1="-2" y1="102" x2="202" y2="102" stroke="black" stroke-width="1" stroke-linecap="round"/>';
+ SVG += '<line x1= "0" y1= "50" x2="200" y2= "50" stroke="gray" stroke-width="1" />';
+ SVG += '<line x1= "0" y1= "60" x2="200" y2= "60" stroke="gray"  stroke-width="1" stroke-dasharray="4 1" />';
+ SVG += '<line x1= "0" y1= "40" x2="200" y2= "40" stroke="gray"  stroke-width="1" stroke-dasharray="4 1" />';
+ SVG += '<line x1= "0" y1= "70" x2="200" y2= "70" stroke="gray"  stroke-width="1" stroke-dasharray="3 2" />';
+ SVG += '<line x1= "0" y1= "30" x2="200" y2= "30" stroke="gray"  stroke-width="1" stroke-dasharray="3 2" />';
+ SVG += '<line x1= "0" y1= "80" x2="200" y2= "80" stroke="gray"  stroke-width="1" stroke-dasharray="2 3" />';
+ SVG += '<line x1= "0" y1= "20" x2="200" y2= "20" stroke="gray"  stroke-width="1" stroke-dasharray="2 3" />';
+ SVG += '<g font-size="5" font-family="Courier" text-anchor="start">';
+ SVG += '<text x="200" y= "50">Ave= ' + AveBeat.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "60">+1&sigma;= ' + Ap1S.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "40">-1&sigma;= ' + Am1S.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "70">+2&sigma;= ' + Ap2S.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "30">-2&sigma;= ' + Am2S.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "80">+3&sigma;= ' + Ap3S.toFixed(2) + '</text>';
+ SVG += '<text x="200" y= "20">-3&sigma;= ' + Am3S.toFixed(2) + '</text>';
+ SVG += '</g>';
+ if ( Beats.length > 1 ) {
+  for ( var i=0;i<Beats.length;i++) {
+   var iPercent = 200.0*(i+1)/Beats.length;
+   var BPercent = 50 - 10.0*(Beats[i]-AveBeat)/SigBeat;
+   SVG += '<circle cx="' + iPercent + '" cy="' + BPercent + '" r="1" stroke="red"/>';
+  }
+ }
+ SVG += '</svg>'
+ //alert(SVG);
+ document.getElementById("graph").innerHTML = SVG;
+}
+
+window.onload= ShowGraph;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+
+<h1>Keep-The-Beat</h1>
+
+<button type="button" onclick="GetBeat()"> Click Me </button>
+
+<h2>Current Beats-per-Minute (BpM)</h2>
+<p id='ShowBeat'>(... still waiting for your first click.)</p>
+<p id="graph"> </p>
+<p>Average Beat: <span id='ShowAve'>(nothing yet...)</span> BpM 
+   [Min: <span id='ShowMin'>(nothing yet...)</span> BpM]
+   [Max: <span id='ShowMax'>(nothing yet...)</span> BpM]</p>
+<p>Standard Deviation: <span id='ShowSig'>(nothing yet...)</span> BpM</p>
+<p>Standard Deviation/Average Beat in percent:
+<span id='ShowPer'>(nothing yet...)</span> %</p>
+<p>Raw Data: <span id='ShowData'>(nothing yet...)</span></p>
+</body>
+</html>

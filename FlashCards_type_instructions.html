@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Flash Cards/Type - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Flash Cards/Type</h1>
+<h2>Instructions</h2>
+
+<h3>Overview</h3>
+<p>The main difference between the <b>Flash Card</b> game and the <b>Flash Card/Type</b> version of the game is that now you can type in the answer, and, similar to the <b>Multiplication</b> game, it keeps track of how many you got right.</p>
+
+<p>Let's just talk about what we changed between the two games:</p>
+
+<h3><code>NewCard()</code></h3>
+
+<p>We added two more lines to the code that writes the front of the flash card:</p>
+<pre>
+var FC = "&lt;div class='card front' &gt;" + FlashCards[i][0]; 
+FC += "&lt;br/&gt;&lt;textarea id='A' rows='1' cols='20'&gt;&lt;/textarea&gt;";
+FC += "&lt;br/&gt;&lt;button type='button' onclick='FlipCard(" + i + ")'&gt;Submit&lt;/button&gt;&lt;/div&gt;";
+</pre>
+
+<p>We added a text area, for you to type in the answer, and a <b>Submit</b> button &mdash; just as in the <b>Hallo YOU</b> game.<br/>
+
+<h3>What is <code>FC += ...</code>?</h3>
+<p>Can you guess? Right, it just short-hand for <code>FC = FC + ...</code></p>
+
+<p>We also added the command:<br/>
+<pre>document.getElementById("A").value = "";</pre>
+<p>at the end of the <code>NewCard()</code> function. We need that to erase the answer you typed from the previous card...</code>
+
+<h3><code>FlipCard()</code></h3>
+<p>Here, we read what you typed, again similar to how we did it in the <code>Hallo YOU</code> game, then we check if what you typed is the same as what is on the back of the card with:</p>
+<pre>if ( A == FlashCards[i][1] ) { ... }</pre>
+<p>and keep track of your score in the same way we did in the <b>Multiplication</b> game.<p>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Flash Cards/Type</title>
+</head>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family: "Courier New";
+ font-size:   20pt;
+ font-weight: bold;
+}
+.card { 
+ font-size:     20pt;
+ text-align:    center;
+ width:         15em;
+ border-style:  solid;
+ border-width:  2px;
+ border-radius: 4px;
+ padding:       2em;
+ margin:        2em;
+ border-color:  gray;
+}
+.front { background-color: lightblue;  }
+.back  { background-color: lightgreen; }
+.end   { background-color: orange; } 
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var FlashCards = [['A', 'a'], ['B', 'b'], ['C', 'c'], ['D', 'd'], 
+ ['E', 'e'], ['F', 'f'], ['G', 'g'], ['H', 'h'], ['I', 'i']];
+var nQ = 0; //Number of Questions 
+var nC = 0; //Number of Correct Answers
+
+function NewCard () {
+ nQ++;
+ var Nfc = FlashCards.length
+ if ( Nfc == 0 ) {
+  var FC = "<p class='card end'> All Done! </p>"
+ } else {
+  var i = Math.floor(Nfc*Math.random());
+  var FC = "<div class='card front' >" + FlashCards[i][0]; 
+  FC += "<br/><textarea id='A' rows='1' cols='20'></textarea>";
+  FC += "<br/><button type='button' onclick='FlipCard(" + i + ")'>Submit</button></div>";
+ }
+ document.getElementById('FCard').innerHTML = FC;
+ document.getElementById("A").value = "";
+}
+
+function FlipCard (i) {
+ var A = document.getElementById("A").value;
+ var DoneWithCard = true; 
+ //alert(">"+A+"<>"+FlashCards[i][1]+"<");
+ if ( A == FlashCards[i][1] ) {
+  nC++; 
+  WD = "<p>Well Done! :) ";
+
+ } else {
+  WD = "<p>:( - Try again... ";
+  DoneWithCard = false; 
+ }
+ var FC = "<p class='card back' onclick='NewCard()'>";
+ FC += FlashCards[i][0] + " : " + FlashCards[i][1] + "</p>";
+ FC += WD + "You got " + nC + " of " + nQ + " right answers!</p>"
+ document.getElementById('FCard').innerHTML = FC;
+ if ( DoneWithCard ) FlashCards.splice(i,1);
+ //alert(FlashCards);
+}
+
+window.onload = NewCard;
+</script>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Flash Cards - Type in the Answer</h1>
+<span id="FCard"></span>
+
+</body>
+</html>

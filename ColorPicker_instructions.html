@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Color Picker - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Colors</h1>
+<h2>Instructions</h2>
+
+<p>Computers represent colors as a set of 3 numbers, each being 16bit=2byte long, that is between 0 and 255 in decimal counting. Each of the three numbers represent the intensity of the colors <b>Red</b>, <b>Green</b>, and <b>Blue</b>. That set of three numbers that is often referred to as "RGB".</p>
+
+<p>For example, bright red is in decimal (255,0,0) or (FF,00,00) in hex, or #FF0000, if written as RGB.</p>
+
+<p>White is all colors on full blast, which is (255,255,255) or (FF,FF,FF) in hex, or #FFFFFF &mdash; and black is "lights out": (0,0,0) or #000000.</p>
+
+<p>Pretty confusing stuff, right? Good that we just created an apps that lets you convert binary, hex, and decimal numbers!</p>
+
+<h3>The Hex Color Picker</h3>
+<p>In CSS, a popular way of defining colors is with hex numbers. For example, to change the background color to a tomato-like red, you would write:</p>
+
+<pre>
+body {
+ background-color: #FF6347;
+ }
+</pre>
+
+<p><em>But how would you know that <code>#FF6347</code> is tomato red?</em><br/>
+You can use the <b>HEX Color Picker</b>, just type the hex number in and see what color you get.</p>
+
+<p>In the <code>&lt;body&gt;</code> HTML area of the <b>Hex Color Picker</b> we define a <code>textarea</code> in which you can type in the 6-digit hex number. When you click the <b>Submit</b> button, the <code>UpdateColor()</code> function is called.</p>
+
+<h3>UpdateColor()</h3>
+<p>This function first reads what you typed in from the <code>textarea</code> and checks if the input is indeed a properly formed 6 digit RGB hex number by calling the <code>Is6HEX</code> function.</p>
+
+<p>If so, it creates a <code>&lt;div&gt;</code> element that we gave the <code>'box'</code> class attribute, and we also provide a local <code>style</code> definition, which set the color you specify as the <code>'background-color'</code></p>
+
+<p><code>&lt;div&gt;</code> is a generic placeholder tag, that start a block, and otherwise lets you define whatever you want it to look like.<br/>
+To learn more about this element check out: <a href= "https://www.w3schools.com/html/html_blocks.asp">W3School: HTML Blocks</a>.</p>
+
+<h3>Is6HEX()</h3>
+<p>We first define a string that contains all valid hex characters, then we check if the string you entered is 6 characters long:</p>
+<pre>if ( C.length != 6 ) { ... }</pre>
+<p>... if not we let you know.</p>
+
+<p>Now you can write an RGB hex color as <code>abc123</code> or as <code>ABC123</code>, both is fine. Just in case we turn all characters to upper case, before checking them. We do that with:</p>
+<pre>var C_upper = C.toUpperCase();</pre>
+
+<p>To be able to check each of the six characters one by one, we turn the string into an array with the string method <code>.split</code>. <br/>
+To learn more about this method check out: <a href= "https://www.w3schools.com/js/js_string_methods.asp">W3School: JS String Methods</a> and scroll way down to <b>Converting a String to an Array</b>.</p>
+
+<p>Then we <code>for</code>-loop through the six elements of the array and check if we can find this character in the string that contains all valid (upper-case) hex characters. The string method <code>.search</code> returns the position where in the reference string the string you asked about was found. If it returns <code>-1 </code> that means that it was found <em>nowhere.</em> <br/>
+To learn more about this method check out: <a href= "https://www.w3schools.com/js/js_string_methods.asp">W3School: JS String Methods</a> and scroll down to <b>Searching for a String in a String</b>.</p>
+
+<h3><code>return true/false</code></h3>
+
+<p>Once we figured out if the string you entered a valid RGB hex number, we stop the function and report back to the calling function, here <code>UpdateColor()</code> if the string is a good RGB hex number (<code>return true</code>) or not (<code>return false)</code>.</p>
+
+<hr><!-- _______________________________________________________________ -->
+<h3>Slider Color Picker</h3>
+
+<p>With Slider Color Picker you can just dial in intensity of each color and see what color that would give you. This app also shows you the corresponding decimal value &mdash; that you can then use in the <em>2 byte Hex Numbers</em> app to convert to hex.</p>
+
+<p>In the <code>&lt;body&gt;</code> HTML area of the <b>Slider Color Picker</b> we define a <code>table</code> with three column and three rows. In the first column we write the name of the color, "Red", "Green" and "Blue", in the second column we out something new: a <em>Slider Bar</em>. It is defined with:</p>
+<pre>&lt;input id='red'  type="range" min="0" max="255" value="128" onchange='UpdateSliders()'&gt;</pre>
+<p>The HTML <code>&lt;input&gt;</code> element is used to define many different types of input.<br/>
+Check out: <a href= "https://www.w3schools.com/html/html_form_input_types.asp">W3School: HTML Input Types</a>.</p>
+
+<p>Here we are using <code>type="range"</code>, which is the slider bar. You have to say want the smallest value would be (here: <code>min="0"</code>), what the largest value would be (here: <code>max="255"</code>), and what the initial value would be, that is the value when you start the app, (here: <code>value="128"</code>).</p>
+
+<p>As soon as we change something on the slider bar we call the function <code>UpdateSliders()</code></p>
+
+<p>In the last column we write what the current values are.</p>
+
+<h3>UpdateSliders()</h3>
+
+<p>We read the current values from the slider bar with:</p>
+<pre>var red   = document.getElementById("red").value;
+var green = document.getElementById("green").value;
+var blue  = document.getElementById("blue").value;</pre>
+<p>and write then right away into the last column of our table with:</p>
+<pre>document.getElementById('ShowRed').innerHTML = red;
+document.getElementById('ShowGreen').innerHTML = green;
+document.getElementById('ShowBlue').innerHTML = blue;</pre>
+<p>Just like in the <b>Hex Color Picker</b> we set the background color of the box to the color we just picked, but this time we use the build-in function <code>rgb(r,g,b)</code> which lets you define colors with three decimal values, instead of hex numbers.</p>
+<hr><!-- _______________________________________________________________ -->
+<h3>Resources</h3>
+
+<p>To learn more about how to define colors with CSS, check out <a href= "https://www.w3schools.com/css/css_colors.asp">W3School: CSS Colors</a></p>
+
+
+</body>
+</html>

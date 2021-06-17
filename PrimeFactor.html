@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Prime Numbers</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    12pt;
+ margin-left:  10pt;
+ color:        navy; }
+p, table {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+button {
+ font-family:  "Helvetica";
+ font-size:    14pt;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var PrimeNumbers  = [2];
+var PrimeNumber2s = [4];
+var PrimeFactors  = [];
+var N = -1;
+var M = -1;
+
+function CheckNextNumbers( n ) {
+ var ps   = [];
+ var p2s  = [];
+ var npps = [];
+ for ( j=0; j<PrimeNumbers.length; j++ ) {
+  p = PrimeNumbers[j];
+  p2 = PrimeNumber2s[j];
+  npp = n%p;
+   
+  ps.push(p)
+  p2s.push(p2)
+  npps.push(npp)
+
+  if ( npp == 0 ) {
+   return
+  } else {
+   if ( p2 > n ) {
+    PrimeNumbers.push(n);
+    PrimeNumber2s.push(n*n);
+    return
+   }
+  }
+ }
+}
+
+function PrimeFactor(M) {
+ document.getElementById("NUT").innerHTML = M;
+ var ps   = [];
+ var p2s  = [];
+ var npps = [];
+
+ for (var i=0; i<PrimeNumbers.length; i++) {
+  var p  = PrimeNumbers[i];
+  var p2 = PrimeNumber2s[i];
+  npp = M%p;
+  
+  ps.push(p)
+  p2s.push(p2)
+  npps.push(npp)
+  document.getElementById("ps").innerHTML = ps;
+  document.getElementById("npps").innerHTML = npps;
+  document.getElementById("p2s").innerHTML = p2s;
+
+  if ( M%p == 0 ) {
+   PrimeFactors.push(p);
+   TEXT = "Factors of " + M + " are: ";
+   M = M/p;
+   document.getElementById("Next").innerHTML = '<button type="button" onclick="PrimeFactor('+ M + ')">Check ' + M + '</button>';
+   TEXT += p + " * " + M;
+   document.getElementById("Result").innerHTML = TEXT;
+   return;
+  }
+  if ( p2 > M ) {
+   PrimeFactors.push(M);
+   CallDone();
+   PrimeNumbers  = [2];
+   PrimeNumber2s = [4];
+   PrimeFactors  = [];
+   N = -1;
+   M = -1;
+   document.getElementById("Next").innerHTML = '<button type="button" onclick="Clear()">Clear</button>';
+   return;
+  }
+ }
+ PrimeFactors.push(M);
+ CallDone();
+ document.getElementById("Next").innerHTML = '<button type="button" onclick="Clear()">Clear</button>';
+}
+
+function CallDone() {
+ Ntest = 1
+ for (var i=0; i<PrimeFactors.length; i++) {
+  Ntest *= PrimeFactors[i]
+ }
+ TEXT = "The prime factors of " + Ntest + " are: " + PrimeFactors;
+ document.getElementById("Result").innerHTML = TEXT;
+}
+
+function Clear() {
+ document.getElementById("Result").innerHTML = "&nbsp;";
+ document.getElementById("primes").innerHTML = "&nbsp;";
+ document.getElementById("NUT").innerHTML = "&nbsp;";
+ document.getElementById("ps").innerHTML = "&nbsp;";
+ document.getElementById("npps").innerHTML = "&nbsp;";
+ document.getElementById("p2s").innerHTML = "&nbsp;";
+ document.getElementById("Next").innerHTML = '<button type="button" onclick="PrimeFactorDecomp()">Submit</button>';
+}
+
+function PrimeFactorDecomp() {
+ N = document.getElementById("NUMBER").value;
+
+ PrimeNumbers  = [2];
+ PrimeNumber2s = [4];
+ for (var n=3; n*n<=N; n=n+2) {
+  CheckNextNumbers( n ) 
+ }
+ document.getElementById("primes").innerHTML = PrimeNumbers.toString().replace(/,/g, " ");
+
+ PrimeFactors = [];
+ M = N;
+ document.getElementById("Next").innerHTML = '<button type="button" onclick="PrimeFactor('+ M + ')">Check ' + M + '</button>'
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Prime Numbers</h1>
+
+<table>
+<tr><td>Enter a Number:</td><td>
+<td><textarea id="NUMBER" rows="1" cols="12"></textarea></td>
+<td id="Next">
+<button type="button" onclick="PrimeFactorDecomp()">Submit</button>
+</td></tr>
+</table>
+
+
+<table>
+<tr><td>Number under test: </td>  <td>n</td><td>=</td><td id="NUT"> &nbsp;</td></tr>
+<tr><td>Primes checked: </td>     <td>p</td><td>=</td><td id="ps">
+&nbsp;</td></tr>
+<tr><td>Remainder: </td>        <td>n%p</td><td>=</td><td id="npps"> &nbsp;</td></tr>
+<tr><td>Squares: </td><td>p<sup>2</sup></td><td>=</td><td id="p2s"> &nbsp;</td></tr>
+</table>
+
+<h2>Result</h2>
+<p id='Result'>&nbsp;</p>
+
+<h2>Primes used in test:</h2>
+<p id="primes">&nbsp;</p>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; 
+ counter-reset: E M T;
+}
+ 
+.E::before {
+  counter-increment: E;
+  content: "(E" counter(E) ")";
+}
+.M::before {
+  counter-increment: M;
+  content: "(M" counter(M) ")";
+}
+.T::before {
+  counter-increment: T;
+  content: "(T" counter(T) ")";
+}
+
+h1 {
+ font-family: "Helvetica";
+ font-size:    20pt;
+ margin-left:  20pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  30pt;
+ color:        navy; }
+h3 {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ font-style:   italic;
+ margin-left:  30pt;
+ color:        gray; }
+h4 {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  35pt;
+ }
+
+p {
+ margin-left:  50pt; 
+ margin-right: 50pt; }
+pre {
+ margin-left:  60pt; }
+
+ol, ul {
+ margin-left:  20pt; }
+code {
+ font-weight:  bold; }
+table {
+ margin-left:  50pt; }
+th {
+ color:        navy; 
+ padding-top:  1em;
+ padding-bottom:  1em;
+}
+td {
+ padding-right: 1em;	
+}
+
+.box {
+ text-align: center;
+ width: 35em;
+ border-style: solid;
+ border-width:  2px;
+ border-radius: 4px;
+ padding:       2em;
+ margin:        2em 2em 2em 10em;
+ border-color: gray;
+ background-color: lightgreen;
+}
+
+.def {
+ width: 70%;
+ border-style: solid;
+ border-width:  2px;
+ border-radius: 4px;
+ margin:        50pt;
+ border-color: gray;
+ background-color: lightgreen;
+}
+
+.red   { color: red; }
+.gray  { color: gray; }
+.small { font-size: 8pt;}
+
+
+/* Temporary 
+.hidden { color: gray; } */
+.hidden { display: none; }
+

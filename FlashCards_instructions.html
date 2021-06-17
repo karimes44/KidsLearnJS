@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Flash Cards - Instructions</title>
+ <link rel="stylesheet" type="text/css" href="kljs.css">
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Flash Cards</h1>
+<h2>Instructions</h2>
+
+<h3>Overview</h3>
+
+<p>Flash cards are good for learning vocabulary:</p>
+
+<p>For example, one side may show a word in English, and the other side shows the same word in Spanish. Then you can look and the English word and say out loud the Spanish word, and the turn the card over to see if you got it right.</p>
+
+<p>How about an app which lets you make up your own flash cards? </p>
+<ol>
+ <li>One side of the Flash Card is shown in blue-ish.</li>
+ <li>Think of that is on the other side and click anywhere on the card.</li>
+ <li>That shows the back side in green-ish, and you can see if you thought correctly.</li>
+ <li>In the code, you'll see something like: <br/>
+ <code>var FlashCards = [['A', 'a'], ['B', 'b'], ['C', 'c'], ['D', 'd']]</code></li>
+ <li>Replace the pairs like <code>['A', 'a']</code> with a vocabulary pair, such as <code>['the House', 'la Casa']</code>.</li>
+</ol>
+
+<h3><code>&lt;body&gt;</code></h3>
+<p>Nothing new here, just a <code>span</code> placeholder to set an <code>id</code>, here <code>FCard</code>, so that the functions know where to place the generated HTML code.</p>
+
+<h3><code>&lt;script&gt;</code></h3>
+
+<p>We learned about an array that contained serval single characters, such as <code>"a", "b", "c"</code>, in the Tic-Tac-Toe game earlier. Here we see and array that has arrays as elements. These arrays here have string values, one for the <i>front</i> of the flash card and one for the <i>back</i>. You will replace the dummy characters with the vocabulary words that you want to memorize.</p>
+
+<h3><code>NewCard()</code></h3>
+<p>The <code>NewCard()</code> function has a lot of similarities with the Tic-Tac-Toe code for one player: We check first if we have already looked at all the cards in our array. If not, we randomly pick one, and show it in the <code>FCard</code> placeholder.</p>
+
+<p>We want to show only the <i>front</i> of the <i>i</i><sup>th</sup> flash card. <code>FlashCards[i]</code> gets us to the right card, and <code>FlashCards[i][0]</code> is the <i>front</i> of this card.</p>
+
+<p>We also add the function that is executed when you click the shown card: <code>FlipCard(i)</code> &mdash; we talk about that one later.</p>
+
+<h3><code>class='card front'</code></h3>
+<p>The card in shown inside a paragraph tag <code>&lt;p&gt;</code>, but we want to make this paragraph look special, like an index card. We again use CSS for that. To tell CSS which paragraph to display in the form of an index card, we give the paragraph a <code>class</code> attribute, here we add even two of them: <code>"card"</code> and <code>"front"</code> or <code>"back"</code>.</p>
+
+<p>In the CSS sections you see classes are defined by putting a dot "." in front of the name, so that we can keep them apart from regular tags. For the <code>card</code> class we set a lot of attributes: We want the text BIG and in the center. We want the card to show a boarder, with rounded corners, etc.</p>
+
+<p>You can look again at <a href= "https://www.w3schools.com/css/default.asp" target="_blank">W3School: CSS Tutorial</a> to check what all these attributes do.</p>
+
+<p>The class definitions for <code>"front"</code> or <code>"back"</code> are pretty simple: we just set a different color!</p>
+
+<h3><code>FlipCard()</code></h3>
+<p>The <code>FlipCard()</code> just shows the back side, i.e., it uses <code>FlashCards[i][<span class="red">1</span>]</code>, instead of <code>FlashCards[i][<span class="gray">0</span>]</code>.</p>
+
+<p>It also removes the flash card we have already looked at from the array using the <code>splice</code> method that we know from Tic-Tac-Toe already.</p>
+</body>
+</html>

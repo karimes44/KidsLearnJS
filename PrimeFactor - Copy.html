@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Prime Factors</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+
+function GetPrimeNumbers ( N ) {
+ var PrimeNumbers = [2];
+ for (var i=3;i<N;i=i+2) {
+  // alert(i);
+  var NP = PrimeNumbers.length - 1;
+  var Si = Math.ceil(Math.sqrt(i));
+  var j = 0;
+  var P = PrimeNumbers[0];
+  while ( i%P != 0 ) {
+   j++;
+   if ( j > NP || P > Si ) {
+    PrimeNumbers.push(i);
+    // alert(PrimeNumbers);
+    break;
+   } else {
+    P = PrimeNumbers[j];
+   }
+  }
+ }
+ return PrimeNumbers;
+}
+
+function GetPrimeFactors ( N ) {
+ var SN = Math.ceil(Math.sqrt(N));
+ var PrimeNumbers = GetPrimeNumbers(SN);
+ alert(PrimeNumbers);
+ var PrimeFactors = [];
+ var M = N;
+ for (var i=0;i<PrimeNumbers.length;i++) {
+  var P = PrimeNumbers[i];
+  var BF = false;
+  while ( M%P == 0 ) {
+   PrimeFactors.push(P);
+   M = M/P;
+   if ( Math.ceil(Math.sqrt(M)) < P ) {
+    BF = true;
+    break;
+   }
+  }
+  if ( BF ) {
+   break;
+  }
+ }
+ if ( M != 1 ) {
+  PrimeFactors.push(M);
+ }
+ return PrimeFactors;
+}
+
+function PrimeFactors () {
+ var N = document.getElementById("NUMBER").value;
+ var PrimeFactors = GetPrimeFactors(N)
+ TEXT = "The prime factors of " + N + " are: " + PrimeFactors;
+ document.getElementById("Dialog").innerHTML = TEXT;
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Prime Factor Decomposition</h1>
+
+<table>
+<tr><td>Enter a Number:</td><td>
+<td><textarea id="NUMBER" rows="1" cols="12"></textarea></td></tr>
+</table>
+
+<button type="button" onclick="PrimeFactors()">Submit</button>
+<p id='Dialog'></p>
+
+</body>
+</html>

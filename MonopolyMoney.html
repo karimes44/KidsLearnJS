@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Monopoly</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Player   = ["Player 1","Player 2","Player 3","Player 4","Bank"];
+var BalanceK = [15000,15000,15000,15000,15000];
+var BalanceM = [15,15,15,15,15];
+
+var TBL_start = "<table border= '1'><tr><th>&nbsp;</th><th>Amount</th><th>From</th><th>To</th></tr>";
+var TBL_end   = "</table>";
+var TBL = "";
+var TBL_body = "";
+var iTrans = 0;
+
+function firstView () {
+	document.getElementById("P0_name").innerHTML = Player[0];
+	document.getElementById("P1_name").innerHTML = Player[1];
+	document.getElementById("P2_name").innerHTML = Player[2];
+	document.getElementById("P3_name").innerHTML = Player[3];
+
+	document.getElementById("P0_val").innerHTML = BalanceM[0];
+	document.getElementById("P1_val").innerHTML = BalanceM[1];
+	document.getElementById("P2_val").innerHTML = BalanceM[2];
+	document.getElementById("P3_val").innerHTML = BalanceM[3];
+	
+	document.getElementById("P0_from").innerHTML = Player[0];
+	document.getElementById("P1_from").innerHTML = Player[1];
+	document.getElementById("P2_from").innerHTML = Player[2];
+	document.getElementById("P3_from").innerHTML = Player[3];
+
+	document.getElementById("P0_to").innerHTML = Player[0];
+	document.getElementById("P1_to").innerHTML = Player[1];
+	document.getElementById("P2_to").innerHTML = Player[2];
+	document.getElementById("P3_to").innerHTML = Player[3];
+};
+
+function execute () {
+	var Value = document.forms.input.elements.Value.value;
+	var Unit  = document.forms.input.elements.Unit;
+	for(var i = 0; i < Unit.length; i++) {
+		if (Unit[i].checked) Unit_set = Unit[i].value;
+	};
+	var To   = document.forms.input.elements.To;
+	for(var i = 0; i < To.length; i++) {
+		if (To[i].checked) To_set = To[i].value;
+	};
+	var From = document.forms.input.elements.From;
+	for(var i = 0; i < From.length; i++) {
+		if (From[i].checked) From_set = From[i].value;
+	};
+	var To   = document.forms.input.elements.To;
+	for(var i = 0; i < To.length; i++) {
+		if (To[i].checked) To_set = To[i].value;
+	};
+	// alert(">" + Value + "<>" + Unit_set + "<>" + From_set + "<>" + To_set + "<");
+
+	var iFrom   = parseInt(From_set);
+	var iTo     = parseInt(To_set);
+	
+	var iValue  = parseInt(Value);
+	var iUnit   = parseInt(Unit_set);
+	var iValK   = iValue * iUnit;
+
+	
+	if ( Value == "g" ) {
+		iValK = 2000
+		iFrom = 4
+		BalanceK[iTo] += iValK;
+		// alert("GO for Player " + iTo + ": 2000");
+	} else if ( iFrom == 4 ) {
+		BalanceK[iTo] += iValK;
+		//  alert("From Bank to Player " + iTo + ": " + iValK);
+	} else if ( iTo  == 4 ) {
+		BalanceK[iFrom] -= iValK;
+		// alert("From Player " + iFrom +  " to Bank: " + iValK);
+	} else {
+		BalanceK[iTo]   += iValK;
+		BalanceK[iFrom] -= iValK;
+		// alert("From Player " + iFrom + " to Player " + iTo + ": " + iValK);
+	}
+	
+	iTrans += 1
+	var ValM = iValK/1000.0;
+	var TBL_next = "<tr>"
+	TBL_next += "<tr>"
+	TBL_next += "<td>" + iTrans        + "</td>";
+	TBL_next += "<td>" + ValM          + "</td>";
+	TBL_next += "<td>" + Player[iFrom] + "</td>";
+	TBL_next += "<td>" + Player[iTo]   + "</td>";
+	TBL_next += "</tr>";
+	TBL_body = TBL_next + TBL_body;
+	
+	TBL = TBL_start + TBL_body + TBL_end;
+	// alert(TBL);
+	document.getElementById("transactions").innerHTML = TBL;
+
+	BalanceM[0] = BalanceK[0]/1000.0;
+	BalanceM[1] = BalanceK[1]/1000.0;
+	BalanceM[2] = BalanceK[2]/1000.0;
+	BalanceM[3] = BalanceK[3]/1000.0;
+
+	document.getElementById("P0_val").innerHTML = BalanceM[0];
+	document.getElementById("P1_val").innerHTML = BalanceM[1];
+	document.getElementById("P2_val").innerHTML = BalanceM[2];
+	document.getElementById("P3_val").innerHTML = BalanceM[3];
+
+};
+
+function setPlayers () {
+	Player[0] = document.forms.players.elements.P1.value;
+	Player[1] = document.forms.players.elements.P2.value;
+	Player[2] = document.forms.players.elements.P3.value;
+	Player[3] = document.forms.players.elements.P4.value;
+	firstView();
+}
+
+window.onload = firstView;
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Monopoly Money Bank</h1>
+
+<h2>Balance</h2>
+<blockquote>
+<table border= "1">
+<tr><th>Account</th><th>Value</th><th>Units</th></tr>
+<tr><td id="P0_name"><b id="P0_name">Player 0</b></td>
+<td id="P0_val">1</td><td>M</td></tr>
+<tr><td id="P1_name"><b id="P1_name">Player 1</b></td>
+<td id="P1_val">1</td><td>M</td></tr>
+<tr><td id="P2_name"><b id="P2_name">Player 2</b></td>
+<td id="P2_val">1</td><td>M</td></tr>
+<tr><td id="P3_name"><b id="P3_name">Player 3</b></td>
+<td id="P3_val">1</td><td>M</td></tr>
+</table>
+</blockquote>
+
+<form name="input">
+<table><tr>
+<td><fieldset>From:
+<label><input type="radio" name="From" value="0">
+<b id="P0_from">Player 0</b></label>
+<label><input type="radio" name="From" value="1">
+<b id="P1_from">Player 1</b></label>
+<label><input type="radio" name="From" value="2">
+<b id="P2_from">Player 2</b></label>
+<label><input type="radio" name="From" value="3">
+<b id="P3_from">Player 3</b></label>
+<label><input type="radio" name="From" value="4" checked> BANK</label>
+</fieldset></td>
+</tr><tr>
+<td><fieldset>
+<label>Value: <input type="text" name="Value" value="0"></label>
+<label><input type="radio" name="Unit" value="1"  checked>
+k</label>
+<label><input type="radio" name="Unit" value="1000">
+M</label>
+</fieldset></td>
+</tr><tr>
+<td><fieldset>
+To: &nbsp; &nbsp;
+<label><input type="radio" name="To" value="0">
+<b id="P0_to">Player 0</b></label>
+<label><input type="radio" name="To" value="1">
+<b id="P1_to">Player 1</b></label>
+<label><input type="radio" name="To" value="2">
+<b id="P2_to">Player 2</b></label>
+<label><input type="radio" name="To" value="3">
+<b id="P3_to">Player 3</b></label>
+<label><input type="radio" name="To" value="4" checked> BANK</label>
+</fieldset></td>
+</tr><tr>
+<td><button type="button" onclick="execute()">
+<b>Execute Transaction</b></button></td>
+</tr>
+</table>
+</form>
+
+<h2>Transactions</h2>
+<blockquote width='10em'>
+<span id="transactions"> List of Transactions. </span>
+</blockquote>
+
+<h2>Players</h2>
+<blockquote>
+<form name="players">
+<!-- fieldset -->
+<label>Player 1: <input type="text" name="P1" value="Player 1"></label><br>
+<label>Player 2: <input type="text" name="P2" value="Player 2"></label><br>
+<label>Player 3: <input type="text" name="P3" value="Player 3"></label><br>
+<label>Player 4: <input type="text" name="P4" value="Player 4"></label>
+<!-- /fieldset -->
+<button type="button" onclick="setPlayers()">
+<b>Set Players</b></button>
+</form>
+</blockquote>
+
+</body>
+</html>

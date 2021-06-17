@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Hello YOU</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+textarea {
+ font-family:  "Courier New";
+ font-size:    14pt;
+ font-weight:  bold;
+}
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+function SayHello( ) {
+ var NAME = document.getElementById("NAME").value;
+ var TEXT = "<p>Hi <b>" + NAME + "</b>! It is nice to meet you.</p>";
+ document.getElementById("Dialog").innerHTML = TEXT;
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Hello YOU</h1>
+
+<p>What is your name?
+<textarea id="NAME" rows="1" cols="20"></textarea></p>
+
+<button type="button" onclick="SayHello()">Submit</button>
+
+<span id='Dialog'></span>
+
+</body>
+</html>

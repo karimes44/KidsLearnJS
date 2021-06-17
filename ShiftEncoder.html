@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Shift Encoder</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Shift = 5;
+
+function Encode( ) {
+ var Text = document.getElementById("toENCODE").value;
+ var Tlen = Text.length;
+ var Encoded = "";
+ 
+ for ( var i = 0; i<Tlen ; i++ ) {
+  var UniCode = Text.charCodeAt(i)
+  Encoded += String.fromCharCode(UniCode+Shift);
+ }
+ 
+ document.getElementById("toDECODE").innerHTML = Encoded;
+}
+
+function Decode( ) {
+ var Text = document.getElementById("toDECODE").value;
+ var Tlen = Text.length;
+ var Decoded = "";
+ 
+ for ( var i = 0; i<Tlen ; i++ ) {
+  var UniCode = Text.charCodeAt(i)
+  Decoded += String.fromCharCode(UniCode-Shift);
+ }
+ 
+ document.getElementById("CLEARTEXT").innerHTML = Decoded;
+}
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Shift Encoder</h1>
+  
+<h2><i>Encode</i> window</h2>
+<textarea id="toENCODE" rows="5" cols="80">
+(Yes, go ahead... Replace this text with your text to be encoded!)</textarea>
+<button type="button" onclick="Encode()">Encode</button>
+
+<h2><i>Decode</i> window</h2>
+<textarea id="toDECODE" rows="5" cols="80"></textarea>
+<button type="button" onclick="Decode()">Decode</button>
+
+<h2><i>Decode</i> output</h2>
+<textarea id='CLEARTEXT' rows="5" cols="80">(nothing yet...)</textarea>
+
+</body>
+</html>

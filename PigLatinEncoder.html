@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"/>
+ <title>Pig Latin</title>
+
+<!-- _______________________________________________________________ -->
+<style>
+body {
+ font-family: "Helvetica";
+ font-size:    14pt;
+ margin-left:  20pt; }
+h1 {
+ font-family: "Helvetica";
+ font-size:    18pt;
+ margin-left:  10pt;
+ color:        navy; }
+h2 {
+ font-family: "Helvetica";
+ font-size:    16pt;
+ margin-left:  15pt;
+}
+p {
+ font-family: "Helvetica";
+ margin-left:  20pt; }
+</style>
+
+<!-- _______________________________________________________________ -->
+<script>
+var Vowels     = "aAeEiIoOuU";
+var Letters    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+var Consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+
+function FindWord( ) {
+ var Text = document.getElementById("INPUT").value;
+ //var List = Text.split(" ");
+ 
+ var PigLatin = "";
+ var Word = "";
+ var WordFlag = false;
+ 
+ for ( var i = 0; i<Text.length ; i++ ) {
+  Char = Text[i];
+  if ( Letters.includes(Char) ) {
+   if ( WordFlag ) {
+    // Is letter and have started a word: Add char to word 
+    Word += Char;
+   } else {
+    // Is letter and not in a word: Start a new word 
+    WordFlag = true;
+    Word = Char;   
+   }
+  } else {
+   if ( WordFlag ) {
+    // Not a letter and have started a word: Close the word and encode 
+    WordFlag = false;	 
+    var Pig = EncodeWord(Word);
+    //alert( Word + " : " + Pig);
+    PigLatin += Pig + Char; 
+   } else {
+    // Not a letter and not in a word: Just copy char over
+    PigLatin += Char; 
+   }
+  }
+ }
+ document.getElementById("Dialog").innerHTML = PigLatin;
+ //alert(PigLatin);
+}
+
+function EncodeWord( Word ) {
+  //alert("Word = " + Word);
+
+  var AllVowels = true;
+  for ( var i = 0; i<Word.length ; i++ ) {
+   if ( Consonants.includes(Word.charAt(i)) ) {
+    AllVowels = false;   
+   }
+  }
+  
+  if ( Word.length == 1 || AllVowels) {
+   Pig = Word + "way";  // Case 3
+  } else {
+   while ( Vowels.includes(Word.charAt(0)) ) { // Case 2
+    if ( Word.charAt(0) == Word.charAt(0).toUpperCase() ) {
+     Word = Word.slice(1) + Word.charAt(0).toLowerCase();
+     Word = Word.charAt(0).toUpperCase() + Word.slice(1)
+    } else {
+     Word = Word.slice(1) + Word.charAt(0);
+    //alert("Word (vowel moved)= " + Word);
+    }
+   }
+   
+   var j = 0;
+   while ( !Vowels.includes(Word.charAt(j)) ) {
+    j++;
+   }
+   if ( Word.charAt(0) == Word.charAt(0).toUpperCase() ) {
+    Pig  = Word.charAt(j).toUpperCase() + Word.slice(j+1)
+    Pig += Word.slice(0,j).toLowerCase() + "ay"
+   } else {
+    Pig  = Word.slice(j) + Word.slice(0,j).toLowerCase() +"ay";
+   }
+  }
+  return Pig;
+}
+
+</script>
+</head>
+
+<!-- _______________________________________________________________ -->
+<body>
+<h1>Pig Latin Encoder</h1>
+
+<textarea id="INPUT" rows="15" cols="80">
+(Yes, go ahead... 
+Replace this text with your text to be converted to Pig Latin! 
+I hope you will like it. 
+ Will You?)</textarea>
+<button type="button" onclick="FindWord()">Submit</button>
+
+<h2>... here is the encoded version:</h2>
+<textarea id='Dialog' rows="15" cols="80">(nothing yet...)</textarea>
+
+</body>
+</html>
